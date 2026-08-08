@@ -1,0 +1,24 @@
+{
+  "id": "p006-senior-couple",
+  "summary": "Rosa, 70, lives with her husband on $2,400/month combined. Tests the seniors pathway against the Aged & Disabled FPL couple limit.",
+  "answers": {
+    "householdSize": 2,
+    "monthlyIncomeUsd": 2400,
+    "age": 70,
+    "isPregnant": false,
+    "hasDisability": false,
+    "isFullTimeStudent": false,
+    "needsLongTermCare": false,
+    "hasComplexImmigrationStatus": false
+  },
+  "expected": {
+    "outcome": "likely_eligible",
+    "pathway": "seniors",
+    "reasonCodes": ["pathway_seniors", "income_within_limit"],
+    "unverifiedRuleIds": [],
+    "missingRuleIds": [],
+    "rulesVerifiedThrough": "2026-08-08"
+  },
+  "pending_rule_verification": false,
+  "note": "$2,400 is under the A&D FPL couple limit of $2,490/month (effective 2026-04-01). NOTE: A&D FPL compares countable income after disregards; screening on gross income is conservative, which is the safe direction — it can under-promise, never over-promise."
+}

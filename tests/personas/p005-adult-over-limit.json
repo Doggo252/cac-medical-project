@@ -1,0 +1,24 @@
+{
+  "id": "p005-adult-over-limit",
+  "summary": "Devon, 45, single, earns $2,000/month — above the adult limit. The screener must say 'may not qualify this way' and still route to the county, never a hard no.",
+  "answers": {
+    "householdSize": 1,
+    "monthlyIncomeUsd": 2000,
+    "age": 45,
+    "isPregnant": false,
+    "hasDisability": false,
+    "isFullTimeStudent": false,
+    "needsLongTermCare": false,
+    "hasComplexImmigrationStatus": false
+  },
+  "expected": {
+    "outcome": "likely_not_eligible",
+    "pathway": "magi_adult",
+    "reasonCodes": ["pathway_magi_adult", "income_over_limit"],
+    "unverifiedRuleIds": [],
+    "missingRuleIds": [],
+    "rulesVerifiedThrough": "2026-08-08"
+  },
+  "pending_rule_verification": false,
+  "note": "$2,000 is above the $1,836/month limit for a household of 1. The persona suite's language test separately guarantees this outcome never reads as a determination."
+}

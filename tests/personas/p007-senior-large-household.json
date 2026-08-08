@@ -1,0 +1,24 @@
+{
+  "id": "p007-senior-large-household",
+  "summary": "Amrit, 68, lives with his son's family of four. The A&D FPL program has individual and couple limits only — household of 5 has no rule, and the engine must say so rather than borrow the couple number.",
+  "answers": {
+    "householdSize": 5,
+    "monthlyIncomeUsd": 1200,
+    "age": 68,
+    "isPregnant": false,
+    "hasDisability": false,
+    "isFullTimeStudent": false,
+    "needsLongTermCare": false,
+    "hasComplexImmigrationStatus": false
+  },
+  "expected": {
+    "outcome": "needs_human",
+    "pathway": "seniors",
+    "reasonCodes": ["pathway_seniors", "rule_missing"],
+    "unverifiedRuleIds": [],
+    "missingRuleIds": ["income_limit_seniors_monthly_household_5"],
+    "rulesVerifiedThrough": null
+  },
+  "pending_rule_verification": false,
+  "note": "Deliberately unresolvable from the chart: seniors' income_limit rules exist only for household sizes 1 and 2 because the Aged & Disabled FPL program defines individual and couple limits. This persona pins the engine's refusal to extrapolate. rulesVerifiedThrough is null because no verified rule was actually used."
+}

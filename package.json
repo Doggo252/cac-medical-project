@@ -1,0 +1,32 @@
+{
+  "name": "cac-medical-project",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Medi-Cal Coverage Helper — don't lose your Medi-Cal.",
+  "workspaces": [
+    "shared",
+    "functions",
+    "web"
+  ],
+  "scripts": {
+    "dev": "npm run build && firebase emulators:exec --only auth,firestore,functions \"npm --prefix web run dev\"",
+    "dev:web": "npm --prefix web run dev",
+    "dev:emulators": "npm run build && firebase emulators:start --only auth,firestore,functions",
+    "rules:generate": "node scripts/generate-rules.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p shared/tsconfig.json && tsc -p functions/tsconfig.json --noEmit && tsc -p tests/tsconfig.json && tsc -p web/tsconfig.json",
+    "build": "npm --prefix functions run build",
+    "build:web": "npm --prefix web run build",
+    "emulators": "firebase emulators:start"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.1",
+    "typescript": "^5.6.3",
+    "vite": "^6.4.3",
+    "vitest": "^3.2.7"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

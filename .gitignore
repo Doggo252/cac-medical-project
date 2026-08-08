@@ -1,0 +1,23 @@
+node_modules/
+lib/
+dist/
+coverage/
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+*-debug.log
+
+# Env / secrets — never commit Twilio, SendGrid, or service-account keys
+.env
+.env.*
+!.env.example
+serviceAccountKey.json
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/
+*.tsbuildinfo

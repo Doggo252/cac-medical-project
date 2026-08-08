@@ -1,0 +1,56 @@
+rules_version = '2';
+
+// Medi-Cal Coverage Helper — Firestore Security Rules
+//
+// Posture: deny by default. A user may read and write only documents under
+// their own `users/{uid}` subtree. Caregivers (P1 feature 8) get read-only
+// access, and only when the owner has created an explicit grant document.
+//
+// Treat this file as code: review it on every data-model change.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // A caregiver grant is a document the OWNER creates at
+    // users/{uid}/caregivers/{caregiverUid}. Its existence — and only its
+    // existence — confers read access. Caregivers can never write.
+    function isActiveCaregiver(uid) {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/users/$(uid)/caregivers/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(uid)/caregivers/$(request.auth.uid)).data.revoked != true;
+    }
+
+    // Owner: full access to their own subtree. Caregiver: read-only.
+    match /users/{uid} {
+      allow read: if isOwner(uid) || isActiveCaregiver(uid);
+      allow write: if isOwner(uid);
+
+      match /{document=**} {
+        allow read: if isOwner(uid) || isActiveCaregiver(uid);
+        allow write: if isOwner(uid);
+      }
+    }
+
+    // Caregiver grants are managed by the owner alone. A caregiver may read
+    // their own grant document (so the client can discover what it can see)
+    // but may never create, modify, or delete one.
+    match /users/{uid}/caregivers/{caregiverUid} {
+      allow read: if isOwner(uid) || isOwner(caregiverUid);
+      allow create, update, delete: if isOwner(uid);
+    }
+
+    // Everything else: denied. Rules data is bundled with the functions and
+    // served through the API, so it never needs a Firestore read path.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "lib",
+    // rootDir is the repo root so that /shared sources and the /rules JSON
+    // files compile into lib/ alongside the functions. That makes functions/
+    // self-contained at deploy time — no npm-workspace resolution needed on
+    // the Cloud Functions side, and /rules is bundled automatically.
+    "rootDir": ".."
+  },
+  "include": ["src/**/*", "../shared/src/**/*", "../rules/**/*.json"],
+  "exclude": ["lib", "node_modules"]
+}

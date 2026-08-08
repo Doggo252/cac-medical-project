@@ -1,0 +1,24 @@
+{
+  "id": "p002-long-term-care-out-of-scope",
+  "summary": "Robert, 72, needs in-home care and lives with his wife on a small fixed income. Long-term care and share-of-cost rules are explicitly out of scope, so the only correct answer is to send him to a person.",
+  "answers": {
+    "householdSize": 2,
+    "monthlyIncomeUsd": 900,
+    "age": 72,
+    "isPregnant": false,
+    "hasDisability": true,
+    "isFullTimeStudent": false,
+    "needsLongTermCare": true,
+    "hasComplexImmigrationStatus": false
+  },
+  "expected": {
+    "outcome": "needs_human",
+    "pathway": null,
+    "reasonCodes": ["out_of_scope_long_term_care"],
+    "unverifiedRuleIds": [],
+    "missingRuleIds": [],
+    "rulesVerifiedThrough": null
+  },
+  "pending_rule_verification": false,
+  "note": "This expectation never changes. The scope guard runs before any rule lookup, so verifying every rule in /rules must not move this persona off needs_human. If it ever does, the guard has been broken."
+}

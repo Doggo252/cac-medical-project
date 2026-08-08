@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    // Tests run through Vitest, which is ESM — so they may use import.meta.
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    "noEmit": true
+  },
+  "include": ["**/*.ts", "../shared/src/**/*", "../functions/src/engine/**/*"]
+}
