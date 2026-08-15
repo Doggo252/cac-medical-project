@@ -1,6 +1,6 @@
 {
   "id": "p009-just-before-senior",
-  "summary": "Smelly, 64, lives with a couple. Edge case for seniors. Combined income of $1,500.",
+  "summary": "Betty, 64, lives with a couple. Edge case for seniors. Combined income of $1,500.",
   "answers": {
     "householdSize": 2,
     "monthlyIncomeUsd": 1500,
@@ -20,5 +20,5 @@
     "rulesVerifiedThrough": "2026-08-08"
   },
   "pending_rule_verification": false,
-  "note": "This is an edge case to catch errors between adults and children."
+  "note": "This is an edge case to catch errors between seniors and non-seniors."
 }
