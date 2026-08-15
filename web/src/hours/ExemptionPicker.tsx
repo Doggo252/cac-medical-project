@@ -10,12 +10,12 @@ interface ExemptionPickerProps {
 }
 
 /**
- * The exemption check — deliberately the FIRST thing the tracker asks.
+ * The exemption check is deliberately the FIRST thing the tracker asks.
  * Nobody should be logging hours they don't owe.
  *
  * The category list comes from the rules API, so a new exemption in /rules
  * shows up here with no UI change. A slug without a label yet still renders
- * (as its slug) rather than silently disappearing — an ugly label is a bug,
+ * (as its slug) rather than silently disappearing: an ugly label is a bug,
  * a missing exemption option is a harm.
  */
 export function ExemptionPicker({ categories, initial, onSave }: ExemptionPickerProps) {

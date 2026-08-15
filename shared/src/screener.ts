@@ -1,5 +1,5 @@
 /**
- * Screener contract — the input and output of the `screen` callable.
+ * Screener contract: the input and output of the `screen` callable.
  *
  * Language discipline: this app SCREENS, it never DETERMINES. Every outcome
  * below is phrased as "likely", and every result carries a link to the official
@@ -10,7 +10,7 @@
  * Answers collected by the question flow.
  *
  * Privacy: these are sent to the API but are NOT persisted for anonymous
- * screening. Nothing here identifies the user — no name, no SSN, no immigration
+ * screening. Nothing here identifies the user: no name, no SSN, no immigration
  * document numbers.
  */
 export interface ScreenerAnswers {
@@ -78,7 +78,7 @@ export interface ScreenResult {
   /** Rules the engine needed but which do not exist in the rule set yet. */
   readonly missingRuleIds: readonly string[];
   /**
-   * Oldest `last_verified` among the rules actually used — the weakest link.
+   * Oldest `last_verified` among the rules actually used: the weakest link.
    * Null when no verified rule was used. Drives the UI's
    * "Based on rules verified [date]" line.
    */

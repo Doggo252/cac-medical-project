@@ -18,7 +18,7 @@ import { db } from "../firebase";
 /**
  * Firestore access for the hours tracker.
  *
- * Everything lives under users/{uid}/... — firestore.rules enforces that only
+ * Everything lives under users/{uid}/..., and firestore.rules enforces that only
  * the owner can read or write it. This module stores and lists; every
  * judgment about the hours (totals, pace, exemptions) happens server-side in
  * the hoursCheck callable.
@@ -61,7 +61,7 @@ export async function deleteActivity(uid: string, id: string): Promise<void> {
 /**
  * Live subscription to one month's activities, newest first. Returns the
  * unsubscribe function. Month prefix filtering uses the YYYY-MM-DD string
- * order — no timezone math, same convention as the engine.
+ * order: no timezone math, same convention as the engine.
  */
 export function watchMonthActivities(
   uid: string,

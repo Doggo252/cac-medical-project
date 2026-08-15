@@ -72,7 +72,7 @@ function NumberAnswer({
 
   /**
    * What's wrong, in words. Out-of-range and non-numeric values explain
-   * themselves as soon as they're typed — that's the moment the person can act
+   * themselves as soon as they're typed, because that's the moment the person can act
    * on it. An empty field only complains once they've tried to continue, so the
    * form doesn't scold them for clearing it.
    */

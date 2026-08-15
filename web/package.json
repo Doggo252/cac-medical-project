@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Medi-Cal Coverage Helper — screener UI. Talks only to our own callable functions.",
+  "description": "Medi-Cal Coverage Helper screener UI. Talks only to our own callable functions.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

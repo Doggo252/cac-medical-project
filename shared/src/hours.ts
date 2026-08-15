@@ -1,5 +1,5 @@
 /**
- * Work-hours tracker contract — the input and output of the `hoursCheck`
+ * Work-hours tracker contract: the input and output of the `hoursCheck`
  * callable. This is the hero feature: exemption check first, then hours.
  */
 
@@ -16,7 +16,7 @@ export interface ActivityLog {
 export interface HoursCheckInput {
   /** Month being checked, as YYYY-MM. */
   readonly month: string;
-  /** ISO date (YYYY-MM-DD) to measure pace against — normally today. */
+  /** ISO date (YYYY-MM-DD) to measure pace against, normally today. */
   readonly asOfDate: string;
   readonly activities: readonly ActivityLog[];
   /**
@@ -27,7 +27,7 @@ export interface HoursCheckInput {
 }
 
 export type HoursStatus =
-  /** Exempt from the work requirement — no hours target applies. */
+  /** Exempt from the work requirement; no hours target applies. */
   | "exempt"
   /** Logged hours already meet the monthly target. */
   | "met"
@@ -40,7 +40,7 @@ export type HoursStatus =
 
 export interface HoursCheckResult {
   readonly month: string;
-  /** Sum of logged hours in the month. Pure arithmetic — never rule-dependent. */
+  /** Sum of logged hours in the month. Pure arithmetic, never rule-dependent. */
   readonly totalHours: number;
   /** Monthly hours target, or null when the rule is unverified/missing. */
   readonly targetHours: number | null;

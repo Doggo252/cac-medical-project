@@ -3,7 +3,7 @@ import { strings } from "../strings";
 
 /**
  * The hero visual: "62 of 80 hours this month" with a live bar and a pace
- * chip. Every number here comes from the hoursCheck result — the client does
+ * chip. Every number here comes from the hoursCheck result; the client does
  * no hours math at all.
  */
 export function HoursProgress({ result }: { readonly result: HoursCheckResult }) {
@@ -57,7 +57,7 @@ export function HoursProgress({ result }: { readonly result: HoursCheckResult })
         </div>
       )}
 
-      {/* The engine's plain-language summary — pace, shortfall, or exempt. */}
+      {/* The engine's plain-language summary: pace, shortfall, or exempt. */}
       <p className="mt-3 text-base leading-relaxed text-slate-600" aria-live="polite">
         {result.message}
       </p>

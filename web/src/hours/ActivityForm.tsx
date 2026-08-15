@@ -31,7 +31,7 @@ export function ActivityForm({ onAdd }: ActivityFormProps) {
         setSaveFailed(false);
         onAdd({ kind, date, hours })
           .then(() => {
-            // Fresh slate for the next entry — a cleared field is not an error.
+            // Fresh slate for the next entry; a cleared field is not an error.
             setHoursText("");
             setSubmitAttempted(false);
           })

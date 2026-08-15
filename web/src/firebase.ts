@@ -16,7 +16,7 @@ import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 /**
  * Firebase client setup.
  *
- * In dev this points at the Emulator Suite, always — never at production. The
+ * In dev this points at the Emulator Suite, always, and never at production. The
  * config values below are only meaningful for a real deploy; the emulators
  * need nothing but a projectId, which is why local dev works with no secrets
  * and no .env file at all.
@@ -55,7 +55,7 @@ export function signInWithGoogle(): Promise<unknown> {
  * Emulator-only shortcut: signs in a fake Google user without the popup
  * account-picker, so local dev and demo recordings don't depend on popup
  * windows. The Auth emulator accepts any well-formed fake credential. This
- * function must never be reachable in a production build — callers gate on
+ * function must never be reachable in a production build; callers gate on
  * `usingEmulator`, and the guard here is the backstop.
  */
 export function devSignIn(): Promise<unknown> {
@@ -74,7 +74,7 @@ export function signOut(): Promise<void> {
 }
 
 /**
- * Email-link (passwordless) sign-in — the CLAUDE.md-sanctioned email path.
+ * Email-link (passwordless) sign-in, the CLAUDE.md-sanctioned email path.
  * No passwords to create, forget, or reset.
  *
  * The email is remembered locally so that opening the link on the SAME device
@@ -105,7 +105,7 @@ export function storedEmailForSignIn(): string | null {
 export async function completeEmailLink(email: string): Promise<void> {
   await signInWithEmailLink(auth, email, window.location.href);
   window.localStorage.removeItem(EMAIL_FOR_SIGN_IN_KEY);
-  // The one-time code is spent — strip it from the URL and history so a
+  // The one-time code is spent, so strip it from the URL and history so a
   // reload or a shared screenshot doesn't carry it around.
   window.history.replaceState(null, "", `${window.location.pathname}#/hours`);
 }

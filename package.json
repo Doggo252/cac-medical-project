@@ -2,7 +2,7 @@
   "name": "cac-medical-project",
   "version": "0.1.0",
   "private": true,
-  "description": "Medi-Cal Coverage Helper — don't lose your Medi-Cal.",
+  "description": "Medi-Cal Coverage Helper: don't lose your Medi-Cal.",
   "workspaces": [
     "shared",
     "functions",
@@ -12,6 +12,7 @@
     "dev": "npm run build && firebase emulators:exec --only auth,firestore,functions \"npm --prefix web run dev\"",
     "dev:web": "npm --prefix web run dev",
     "dev:emulators": "npm run build && firebase emulators:start --only auth,firestore,functions",
+    "learn": "vitest --config vitest.learn.config.ts",
     "rules:generate": "node scripts/generate-rules.ts",
     "test": "vitest run",
     "test:watch": "vitest",

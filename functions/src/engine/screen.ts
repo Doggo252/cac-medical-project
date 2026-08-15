@@ -9,7 +9,7 @@ import { RuleBook, RuleTrace } from "./ruleBook";
 
 /**
  * Where every result sends the user. This app screens; only the county
- * determines. The hand-off is a link plus a checklist — there is no
+ * determines. The hand-off is a link plus a checklist; there is no
  * integration with any state system and the copy must never imply one.
  */
 const BENEFITS_CAL_URL = "https://benefitscal.com/";
@@ -23,7 +23,7 @@ const BENEFITS_CAL_URL = "https://benefitscal.com/";
  *
  * Not yet handled: `hasDisability` and `isFullTimeStudent` are collected but do
  * not change the pathway. Disability-based coverage is non-MAGI and often
- * involves share of cost, which CLAUDE.md puts out of scope — routing it
+ * involves share of cost, which CLAUDE.md puts out of scope. Routing it
  * correctly needs its own rules and a product decision, so it is deliberately
  * not guessed at here.
  */

@@ -9,7 +9,7 @@ export default defineConfig({
   resolve: {
     alias: {
       // Screener and rule types come from the same source of truth the
-      // functions use. Types only — the client never evaluates a rule.
+      // functions use. Types only; the client never evaluates a rule.
       "@shared": fileURLToPath(new URL("../shared/src", import.meta.url)),
     },
   },

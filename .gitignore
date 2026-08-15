@@ -10,7 +10,7 @@ firestore-debug.log
 ui-debug.log
 *-debug.log
 
-# Env / secrets — never commit Twilio, SendGrid, or service-account keys
+# Env / secrets: never commit Twilio, SendGrid, or service-account keys
 .env
 .env.*
 !.env.example

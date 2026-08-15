@@ -54,7 +54,7 @@ function round(value: number): number {
 /**
  * Totals a month's logged activities and compares them to the work requirement.
  *
- * Exemptions are checked first, by design — nobody should be asked to log hours
+ * Exemptions are checked first, by design: nobody should be asked to log hours
  * they do not owe. `totalHours` is plain arithmetic and is always reported, even
  * when the rules needed to judge it are unverified.
  */
@@ -127,7 +127,7 @@ export function hoursCheck(input: HoursCheckInput, book: RuleBook): HoursCheckRe
   if (totalHours >= target.value) {
     return finish(
       "met",
-      `You hit your goal — ${totalHours} of ${target.value} hours this month.`,
+      `You hit your goal: ${totalHours} of ${target.value} hours this month.`,
       target.value,
       expectedByNow
     );
@@ -135,14 +135,14 @@ export function hoursCheck(input: HoursCheckInput, book: RuleBook): HoursCheckRe
   if (totalHours >= expectedByNow) {
     return finish(
       "on_pace",
-      `You are on track — ${totalHours} of ${target.value} hours. ${remaining} to go this month.`,
+      `You are on track: ${totalHours} of ${target.value} hours. ${remaining} to go this month.`,
       target.value,
       expectedByNow
     );
   }
   return finish(
     "behind",
-    `You are behind — ${totalHours} of ${target.value} hours. You need ${remaining} more before the month ends.`,
+    `You are behind: ${totalHours} of ${target.value} hours. You need ${remaining} more before the month ends.`,
     target.value,
     expectedByNow
   );

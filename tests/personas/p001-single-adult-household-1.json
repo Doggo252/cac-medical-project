@@ -20,5 +20,5 @@
     "rulesVerifiedThrough": "2026-08-08"
   },
   "pending_rule_verification": false,
-  "note": "$1,500/month is under the 138% FPL limit of $1,836/month for a household of 1 (DHCS ACWDL 26-01, Enclosure 1, effective 2026-01-01). rulesVerifiedThrough tracks the oldest last_verified among rules used — update it when the FPL rules are re-verified."
+  "note": "$1,500/month is under the 138% FPL limit of $1,836/month for a household of 1 (DHCS ACWDL 26-01, Enclosure 1, effective 2026-01-01). rulesVerifiedThrough tracks the oldest last_verified among rules used; update it when the FPL rules are re-verified."
 }

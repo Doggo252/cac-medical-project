@@ -12,21 +12,27 @@ import {
 import { strings } from "../strings";
 
 /**
- * The account gate for the tracker — and ONLY the tracker. The screener stays
+ * The account gate for the tracker, and ONLY the tracker. The screener stays
  * anonymous; an account exists solely so logged hours have somewhere to live.
  *
  * Two sign-in paths, both passwordless: Google, or an emailed sign-in link.
  * When the page URL is itself a sign-in link, this card becomes the
  * completion step instead.
  */
-export function SignInCard() {
+interface SignInCardProps {
+  /** Context-specific framing; defaults to the tracker's copy. */
+  readonly heading?: string | undefined;
+  readonly body?: string | undefined;
+}
+
+export function SignInCard({ heading, body }: SignInCardProps) {
   // If the URL carries a sign-in link, we are completing, not starting.
   const [completing] = useState(hasPendingEmailLink);
 
-  return completing ? <CompleteLink /> : <StartSignIn />;
+  return completing ? <CompleteLink /> : <StartSignIn heading={heading} body={body} />;
 }
 
-function StartSignIn() {
+function StartSignIn({ heading, body }: SignInCardProps) {
   const [email, setEmail] = useState("");
   const [sentTo, setSentTo] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -59,7 +65,7 @@ function StartSignIn() {
     return (
       <section aria-live="polite">
         <h2 className="text-2xl font-semibold text-balance text-slate-900">
-          {strings.tracker.signIn.heading}
+          {heading ?? strings.tracker.signIn.heading}
         </h2>
         <p className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-base leading-relaxed text-emerald-900">
           {strings.tracker.signIn.emailSent(sentTo)}
@@ -71,9 +77,11 @@ function StartSignIn() {
   return (
     <section aria-labelledby="signin-heading">
       <h2 id="signin-heading" className="text-2xl font-semibold text-balance text-slate-900">
-        {strings.tracker.signIn.heading}
+        {heading ?? strings.tracker.signIn.heading}
       </h2>
-      <p className="mt-3 text-base leading-relaxed text-slate-600">{strings.tracker.signIn.body}</p>
+      <p className="mt-3 text-base leading-relaxed text-slate-600">
+        {body ?? strings.tracker.signIn.body}
+      </p>
 
       <button
         type="button"
@@ -134,7 +142,7 @@ function StartSignIn() {
 
 /**
  * Completes a sign-in link. Same device: the stored email finishes it
- * silently. Different device: ask for the email — Firebase requires it so a
+ * silently. Different device: ask for the email; Firebase requires it so a
  * forwarded or intercepted link is useless on its own.
  */
 function CompleteLink() {
@@ -152,7 +160,7 @@ function CompleteLink() {
       return;
     }
     completeEmailLink(stored).catch(() => {
-      // Stored email didn't match the link (or the code expired) — let the
+      // Stored email didn't match the link (or the code expired), so let the
       // person type the address rather than failing silently.
       setNeedsEmail(true);
       setError(strings.tracker.signIn.linkFailed);

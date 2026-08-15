@@ -1,6 +1,6 @@
 {
   "id": "p003-child-household-4",
-  "summary": "Sofia, 8, lives with her parents and brother. Family makes $7,000/month — too much for the adult pathway but under the children's ceiling. Tests that kids are screened against 266% FPL, not their parents' 138% limit.",
+  "summary": "Sofia, 8, lives with her parents and brother. Family makes $7,000/month, which is too much for the adult pathway but under the children's ceiling. Tests that kids are screened against 266% FPL, not their parents' 138% limit.",
   "answers": {
     "householdSize": 4,
     "monthlyIncomeUsd": 7000,
@@ -20,5 +20,5 @@
     "rulesVerifiedThrough": "2026-08-08"
   },
   "pending_rule_verification": false,
-  "note": "$7,000 is under the 266% FPL (ACA OTLIC) limit of $7,315/month for a household of 4, but well over the adult limit of $3,795 — if this persona ever flips to likely_not_eligible, the pathway choice broke."
+  "note": "$7,000 is under the 266% FPL (ACA OTLIC) limit of $7,315/month for a household of 4, but well over the adult limit of $3,795; if this persona ever flips to likely_not_eligible, the pathway choice broke."
 }

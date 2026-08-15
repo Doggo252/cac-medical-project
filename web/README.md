@@ -28,7 +28,7 @@ anything under `/functions` or `/rules`, re-run `npm run build` (or restart
 ## Rules this app follows
 
 - **It never evaluates a rule.** Every answer comes from the `screen` callable.
-  There is no client-side engine and no fallback — if the API is unreachable the
+  There is no client-side engine and no fallback: if the API is unreachable the
   UI says so rather than making something up.
 - **It never reads `/rules` directly.** Even the "Where our numbers come from"
   panel goes through the `rulesStatus` callable.
@@ -51,7 +51,7 @@ anything under `/functions` or `/rules`, re-run `npm run build` (or restart
 | `src/components/`        | ProgressBar, QuestionCard, ResultCard, RulesPanel       |
 
 `showIf` on a question must return true while the answer it depends on is still
-unknown — otherwise the progress bar's denominator grows as you answer, which
+unknown; otherwise the progress bar's denominator grows as you answer, which
 reads as the flow getting longer the more you do.
 
 ## Hours tracker (P0-3)
@@ -60,7 +60,7 @@ Routing is a two-view hash router: `#/` screener, `#/hours` tracker.
 
 - **Sign-in is tracker-only and passwordless.** The screener stays anonymous;
   an account exists solely so logged hours have somewhere to live. Two paths:
-  Google, or an emailed sign-in link (per CLAUDE.md — no passwords to manage).
+  Google, or an emailed sign-in link (per CLAUDE.md, no passwords to manage).
   A link opened on the same device completes silently via the locally stored
   email; on a different device the person retypes their email (Firebase's
   phishing guard). In the emulator, sent links are captured at
@@ -68,7 +68,7 @@ Routing is a two-view hash router: `#/` screener, `#/hours` tracker.
   The dashed "Dev sign-in" button is emulator-gated and signs in a fake user
   without a popup.
 - **Exemption check comes first.** The 13 categories come from the
-  `work_requirement_exemption_categories` rule via `rulesStatus` — a new
+  `work_requirement_exemption_categories` rule via `rulesStatus`, so a new
   exemption in /rules appears in the UI with no code change. The engine, not
   the client, decides whether a stored category means exempt.
 - **The client does no hours math.** Activities live in

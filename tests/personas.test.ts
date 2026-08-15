@@ -47,7 +47,7 @@ describe("golden personas", () => {
   });
 
   for (const persona of personas) {
-    describe(`${persona.id} — ${persona.summary}`, () => {
+    describe(`${persona.id}: ${persona.summary}`, () => {
       const result = screen(persona.answers, book);
 
       it("reaches the expected outcome and pathway", () => {

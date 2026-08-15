@@ -7,7 +7,7 @@ import { strings } from "../strings";
 /**
  * Shows which numbers are sourced and which aren't.
  *
- * The data comes from the `rulesStatus` callable — the client never reads
+ * The data comes from the `rulesStatus` callable; the client never reads
  * /rules directly, same as it never evaluates one.
  */
 export function RulesPanel() {
@@ -35,7 +35,7 @@ export function RulesPanel() {
       <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-slate-700">
         {strings.rulesPanel.heading}
         <span className="ml-2 font-normal text-slate-500">
-          — {strings.rulesPanel.summary(status.verifiedCount, status.totalCount)}
+          ({strings.rulesPanel.summary(status.verifiedCount, status.totalCount)})
         </span>
       </summary>
 

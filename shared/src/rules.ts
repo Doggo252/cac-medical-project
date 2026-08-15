@@ -1,5 +1,5 @@
 /**
- * Rule file schema — the contract every JSON file under /rules must satisfy.
+ * Rule file schema: the contract every JSON file under /rules must satisfy.
  *
  * A rule is either VERIFIED (its `value` traces to a primary source) or
  * UNVERIFIED (its `value` is the literal TODO_VERIFY sentinel). There is no
@@ -52,7 +52,7 @@ export function isVerified(rule: Rule): boolean {
 /**
  * A rule as reported to the client by the `rulesStatus` callable.
  *
- * The frontend never reads /rules directly — it asks the API, same as it does
+ * The frontend never reads /rules directly; it asks the API, same as it does
  * for a determination. Published income limits are public information, so the
  * values are included as-is (an unverified rule reports the TODO_VERIFY
  * sentinel, which is the honest answer).

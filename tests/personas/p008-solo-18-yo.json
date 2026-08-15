@@ -1,0 +1,24 @@
+{
+  "id": "p008-solo-18-yo",
+  "summary": "Billy, 18, lives alone. Edge case for children. Doesn't have a job yet.",
+  "answers": {
+    "householdSize": 1,
+    "monthlyIncomeUsd": 0,
+    "age": 18,
+    "isPregnant": false,
+    "hasDisability": false,
+    "isFullTimeStudent": false,
+    "needsLongTermCare": false,
+    "hasComplexImmigrationStatus": false
+  },
+  "expected": {
+    "outcome": "likely_eligible",
+    "pathway": "children",
+    "reasonCodes": ["pathway_children", "income_within_limit"],
+    "unverifiedRuleIds": [],
+    "missingRuleIds": [],
+    "rulesVerifiedThrough": "2026-08-08"
+  },
+  "pending_rule_verification": false,
+  "note": "This is an edge case to catch errors between adults and children."
+}

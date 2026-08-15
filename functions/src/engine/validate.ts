@@ -20,7 +20,7 @@ function isIsoDate(value: unknown): value is string {
 
 /**
  * A verified rule must cite a government publication. This is the mechanical
- * half of "primary sources only" — it cannot tell a DHCS chart from a DHCS
+ * half of "primary sources only"; it cannot tell a DHCS chart from a DHCS
  * press release, but it does stop a blog or a news article from landing here.
  */
 function isPrimarySourceUrl(value: string): boolean {
@@ -83,7 +83,7 @@ function validateRule(raw: unknown, index: number, problems: string[]): void {
   if (!isPrimarySourceUrl(rule.source_url)) {
     problems.push(
       `${label}: verified rules need a "source_url" on an https .gov domain ` +
-        `(primary sources only — no blogs, news articles, or model memory)`
+        `(primary sources only; no blogs, news articles, or model memory)`
     );
   }
   if (typeof rule.source_name !== "string" || rule.source_name.length === 0) {
@@ -107,7 +107,7 @@ function validateRule(raw: unknown, index: number, problems: string[]): void {
 
 /**
  * Parses and validates a raw rule file. Throws rather than returning a partial
- * rule set — a malformed rule must never reach a screening decision.
+ * rule set: a malformed rule must never reach a screening decision.
  */
 export function parseRuleSet(raw: unknown): RuleSet {
   if (typeof raw !== "object" || raw === null) {

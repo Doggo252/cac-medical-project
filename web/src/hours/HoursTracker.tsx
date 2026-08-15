@@ -3,7 +3,7 @@ import { onAuthStateChanged, type User } from "firebase/auth";
 
 import type { ActivityLog, HoursCheckResult, RulesStatusResult } from "@shared";
 import { fetchRulesStatus, hoursCheck } from "../api";
-import { auth, signOut } from "../firebase";
+import { auth } from "../firebase";
 import { strings } from "../strings";
 import { ActivityForm } from "./ActivityForm";
 import { ExemptionPicker } from "./ExemptionPicker";
@@ -76,16 +76,8 @@ function SignedIn({ user }: { readonly user: User }) {
 
   return (
     <div>
-      <div className="flex items-start justify-between gap-3">
-        <h2 className="text-2xl font-semibold text-slate-900">{strings.tracker.heading}</h2>
-        <button
-          type="button"
-          onClick={() => void signOut()}
-          className="shrink-0 text-sm font-medium text-slate-500 underline underline-offset-4 hover:text-slate-800"
-        >
-          {strings.tracker.signIn.signOut}
-        </button>
-      </div>
+      {/* Sign-out and account details live on #/profile (header chip). */}
+      <h2 className="text-2xl font-semibold text-slate-900">{strings.tracker.heading}</h2>
 
       <FutureStartBanner effectiveDate={hoursRule?.effectiveDate} />
 
@@ -115,7 +107,7 @@ function SignedIn({ user }: { readonly user: User }) {
 
 /**
  * The "ready for the future" framing. The start date comes from the rule's
- * effective_date via the API — when DHCS moves the date, this banner follows
+ * effective_date via the API, so when DHCS moves the date, this banner follows
  * with no code change. Once the date passes, the banner retires itself.
  */
 function FutureStartBanner({ effectiveDate }: { readonly effectiveDate: string | undefined }) {

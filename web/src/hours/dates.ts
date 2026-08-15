@@ -1,4 +1,4 @@
-/** Date helpers for the tracker. All local time — the log is the user's day. */
+/** Date helpers for the tracker. All local time, because the log is the user's day. */
 
 export function todayIso(): string {
   const now = new Date();

@@ -1,6 +1,6 @@
 {
   "id": "p007-senior-large-household",
-  "summary": "Amrit, 68, lives with his son's family of four. The A&D FPL program has individual and couple limits only — household of 5 has no rule, and the engine must say so rather than borrow the couple number.",
+  "summary": "Amrit, 68, lives with his son's family of four. The A&D FPL program has individual and couple limits only: household of 5 has no rule, and the engine must say so rather than borrow the couple number.",
   "answers": {
     "householdSize": 5,
     "monthlyIncomeUsd": 1200,

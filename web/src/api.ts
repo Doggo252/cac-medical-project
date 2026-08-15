@@ -12,7 +12,7 @@ import { functions } from "./firebase";
 /**
  * The only way this app gets an answer.
  *
- * There is no client-side copy of the rules engine and no fallback path — if
+ * There is no client-side copy of the rules engine and no fallback path: if
  * the API can't be reached, the UI says so rather than making something up.
  */
 const screenCallable = httpsCallable<ScreenerAnswers, ScreenResult>(functions, "screen");

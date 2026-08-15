@@ -1,6 +1,6 @@
 rules_version = '2';
 
-// Medi-Cal Coverage Helper — Firestore Security Rules
+// Medi-Cal Coverage Helper: Firestore Security Rules
 //
 // Posture: deny by default. A user may read and write only documents under
 // their own `users/{uid}` subtree. Caregivers (P1 feature 8) get read-only
@@ -20,8 +20,8 @@ service cloud.firestore {
     }
 
     // A caregiver grant is a document the OWNER creates at
-    // users/{uid}/caregivers/{caregiverUid}. Its existence — and only its
-    // existence — confers read access. Caregivers can never write.
+    // users/{uid}/caregivers/{caregiverUid}. Its existence, and only its
+    // existence, confers read access. Caregivers can never write.
     function isActiveCaregiver(uid) {
       return isSignedIn()
         && exists(/databases/$(database)/documents/users/$(uid)/caregivers/$(request.auth.uid))

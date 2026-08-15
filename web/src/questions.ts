@@ -8,7 +8,7 @@ import { strings } from "./strings";
  * (household, income, age) and the two scope-guard questions come last, once
  * someone has already invested a little and understands what the tool is for.
  *
- * `showIf` keeps the flow short — nobody should be asked whether they are
+ * `showIf` keeps the flow short; nobody should be asked whether they are
  * pregnant at 71, or whether they're a full-time student at 58.
  *
  * A `showIf` must return true while the answer it depends on is still unknown.
@@ -34,8 +34,8 @@ export interface NumberQuestion extends BaseQuestion {
   readonly max: number;
   /**
    * Shown when the typed value falls outside [min, max]. Written per question
-   * so it can explain the likely mistake — entering a yearly income instead of
-   * a monthly one, say — rather than just restating the bounds.
+   * so it can explain the likely mistake (entering a yearly income instead of
+   * a monthly one, say) rather than just restating the bounds.
    */
   readonly rangeMessage: string;
   /** Prefix shown inside the input, e.g. "$". */
@@ -126,7 +126,7 @@ export function visibleQuestions(draft: Draft): readonly Question[] {
 /**
  * Fills in the questions that were skipped by `showIf`.
  *
- * A skipped question is always a "no" — we skip it precisely because the answer
+ * A skipped question is always a "no"; we skip it precisely because the answer
  * is not in doubt. The API requires a complete set of answers, so this is where
  * the flow's shortcuts get reconciled with the contract.
  */

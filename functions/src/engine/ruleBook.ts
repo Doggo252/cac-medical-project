@@ -11,7 +11,7 @@ export type Lookup<T> =
  *
  * Every number the engine uses comes through here, which is what keeps
  * eligibility values out of application code. A lookup has three outcomes and
- * the engine must handle all three — that is how `TODO_VERIFY` turns into an
+ * the engine must handle all three; that is how `TODO_VERIFY` turns into an
  * honest "we can't tell you yet" instead of a wrong answer.
  */
 export class RuleBook {
@@ -29,7 +29,7 @@ export class RuleBook {
     return this.ruleSet.rule_set_id;
   }
 
-  /** Every rule id in the set — used by the provenance tests. */
+  /** Every rule id in the set, used by the provenance tests. */
   get ids(): readonly string[] {
     return this.ruleSet.rules.map((rule) => rule.id);
   }
@@ -62,7 +62,7 @@ export class RuleBook {
   }
 
   /**
-   * Oldest `last_verified` among the given rules — the weakest link, and the
+   * Oldest `last_verified` among the given rules: the weakest link, and the
    * date the UI shows as "Based on rules verified [date]". Null when none of
    * them is verified.
    */

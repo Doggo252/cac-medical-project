@@ -20,5 +20,5 @@
     "rulesVerifiedThrough": "2026-08-08"
   },
   "pending_rule_verification": false,
-  "note": "$3,800 is under the 213% FPL pregnancy limit of $3,843/month for a household of 2 (adult limit is $2,490). Deliberately close to the boundary — a rounding or off-by-one bug in the comparison shows up here."
+  "note": "$3,800 is under the 213% FPL pregnancy limit of $3,843/month for a household of 2 (adult limit is $2,490). Deliberately close to the boundary: a rounding or off-by-one bug in the comparison shows up here."
 }

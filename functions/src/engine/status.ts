@@ -5,7 +5,7 @@ import { RuleBook } from "./ruleBook";
  * Reports what the rule book currently knows and what it is still missing.
  *
  * This backs the transparency requirement: the UI has to be able to say which
- * numbers are sourced, from where, and as of when — not just show a verdict.
+ * numbers are sourced, from where, and as of when, not just show a verdict.
  */
 export function rulesStatus(book: RuleBook): RulesStatusResult {
   const rules = book.rules.map((rule) => ({

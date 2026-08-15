@@ -1,0 +1,24 @@
+{
+  "id": "p009-just-before-senior",
+  "summary": "Smelly, 64, lives with a couple. Edge case for seniors. Combined income of $1,500.",
+  "answers": {
+    "householdSize": 2,
+    "monthlyIncomeUsd": 1500,
+    "age": 64,
+    "isPregnant": false,
+    "hasDisability": false,
+    "isFullTimeStudent": false,
+    "needsLongTermCare": false,
+    "hasComplexImmigrationStatus": false
+  },
+  "expected": {
+    "outcome": "likely_eligible",
+    "pathway": "magi_adult",
+    "reasonCodes": ["pathway_magi_adult", "income_within_limit"],
+    "unverifiedRuleIds": [],
+    "missingRuleIds": [],
+    "rulesVerifiedThrough": "2026-08-08"
+  },
+  "pending_rule_verification": false,
+  "note": "This is an edge case to catch errors between adults and children."
+}

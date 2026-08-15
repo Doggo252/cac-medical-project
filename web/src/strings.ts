@@ -19,16 +19,46 @@ export const strings = {
   },
 
   home: {
-    screenerCard: {
-      title: "See if you qualify",
-      body: "A few quick questions, no account needed.",
-      cta: "Check now",
+    tabs: {
+      screener: "See if you qualify",
+      hours: "Track your hours",
     },
-    trackerCard: {
-      title: "Track your work hours",
-      body: "Get ready for the 2027 rule early.",
-      cta: "Start tracking",
+    accountChip: {
+      signIn: "Sign in",
+      profileAria: "Your account",
     },
+  },
+
+  profile: {
+    heading: "Your account",
+    signedOutHeading: "Sign in to your account",
+    signedOutBody:
+      "Your account holds your logged work hours and your exemption answer, nothing else. No passwords: use Google or an emailed link.",
+    emailLabel: "Email",
+    memberSince: (date: string) => `Member since ${date}`,
+    screening: {
+      heading: "Your eligibility check",
+      savedOn: (date: string) => `Saved ${date}`,
+      pathwayLine: (label: string) => `Based on the ${label} pathway.`,
+      pathways: {
+        magi_adult: "adult income",
+        children: "children's coverage",
+        pregnancy: "pregnancy coverage",
+        seniors: "65-and-older",
+      } as Record<string, string>,
+      none: "Nothing saved yet. Run a quick check and you can save the result here.",
+      runCheck: "See if I qualify",
+      checkAgain: "Run a new check",
+      remove: "Remove saved result",
+      removeHint: "Removing it only deletes the saved copy. It doesn't change anything with the county.",
+    },
+    exemptionHeading: "Work rule exemption",
+    exemptionExempt: (label: string) => `You said: "${label}." The work-hours rule shouldn't apply to you.`,
+    exemptionNotExempt: "You said none of the exemptions apply, so you're logging hours.",
+    exemptionUnanswered: "You haven't answered the exemption check yet, so the tracker will ask you first.",
+    changeAnswer: "Change my answer",
+    signOut: "Sign out",
+    signOutHint: "Your saved hours stay in your account for when you come back.",
   },
 
   intro: {
@@ -68,6 +98,23 @@ export const strings = {
       badge: "Needs a person",
       note: "Some situations are too complicated for a quick check, and guessing would not help you.",
     },
+    /**
+     * Post-result account pitch, shown ONLY on likely_eligible. The screener
+     * stays anonymous; an account is offered, never required, and only when
+     * there's a real next step to save.
+     */
+    keepCoverage: {
+      heading: "Getting covered is step one. Keeping it is step two.",
+      body: "Make a free account and you'll be ready before it counts: track the work hours that start in 2027, and see everything in one place.",
+      cta: "Make my free account",
+      goToTracker: "Go to my hours tracker",
+      signedInAs: (email: string) => `You're signed in as ${email}.`,
+    },
+    save: {
+      cta: "Save this result to my account",
+      saving: "Saving…",
+      saved: "Saved to your account. You can see it anytime on your profile.",
+    },
     whyHeading: "Why we said this",
     verifiedThrough: (date: string) => `Based on rules verified ${date}`,
     notVerifiedYet:
@@ -88,17 +135,17 @@ export const strings = {
     heading: "Work hours tracker",
     /**
      * The judges-and-users framing: this requirement is NOT in force yet. The
-     * start date is filled from the rule's effective_date via the API — the
+     * start date is filled from the rule's effective_date via the API; the
      * UI never hard-codes it.
      */
     notYetBanner: {
       badge: "Not required yet",
       body: (startDate: string) =>
-        `The work-hours rule starts ${startDate}. Nothing is required today — tracking now makes it a habit before it counts.`,
+        `The work-hours rule starts ${startDate}. Nothing is required today, but tracking now makes it a habit before it counts.`,
     },
     signIn: {
       heading: "Save your hours as you go",
-      body: "Sign in so your logged hours are saved to your account. We only use your account to store your own entries — nothing is shared.",
+      body: "Sign in so your logged hours are saved to your account. We only use your account to store your own entries. Nothing is shared.",
       googleButton: "Sign in with Google",
       devButton: "Dev sign-in (emulator only)",
       signOut: "Sign out",
@@ -106,13 +153,13 @@ export const strings = {
       emailLabel: "Your email address",
       emailSend: "Email me a sign-in link",
       emailSent: (email: string) =>
-        `Check your email — we sent a sign-in link to ${email}. Open it on this device to finish signing in.`,
+        `Check your email: we sent a sign-in link to ${email}. Open it on this device to finish signing in.`,
       emailInvalid: "That doesn't look like an email address.",
       confirmHeading: "One more step",
       confirmBody:
         "Enter the email address your sign-in link was sent to, so we know it's really you.",
       confirmButton: "Finish signing in",
-      linkFailed: "That sign-in link didn't work. It may have expired — send yourself a new one.",
+      linkFailed: "That sign-in link didn't work. It may have expired, so send yourself a new one.",
     },
     exemption: {
       heading: "First, a quick check",
@@ -120,9 +167,9 @@ export const strings = {
       none: "None of these apply to me",
       confirm: "Save my answer",
       change: "Change my exemption answer",
-      exemptHeading: "Good news — you look exempt.",
+      exemptHeading: "Good news: you look exempt.",
       exemptBody:
-        "Based on your answer, the work-hours rule shouldn't apply to you. You don't need to log hours. Your county confirms exemptions — keep an eye on your renewal paperwork.",
+        "Based on your answer, the work-hours rule shouldn't apply to you. You don't need to log hours. Your county confirms exemptions, so keep an eye on your renewal paperwork.",
       categories: {
         american_indian_urban_indian: "I'm American Indian or Urban Indian",
         caregiver_child_13_or_younger_or_disabled_person:
@@ -209,14 +256,14 @@ export const strings = {
   questions: {
     householdSize: {
       prompt: "How many people are in your household?",
-      help: "Count yourself, plus anyone you file taxes with — a partner, kids, or anyone you claim.",
+      help: "Count yourself, plus anyone you file taxes with: a partner, kids, or anyone you claim.",
       unit: "people",
       rangeMessage:
         "Enter a number between 1 and 12. If your household is bigger than that, your county office can help you directly.",
     },
     monthlyIncomeUsd: {
       prompt: "About how much does your household make each month?",
-      help: "Before taxes are taken out. A close estimate is fine — we don't need an exact number.",
+      help: "Before taxes are taken out. A close estimate is fine; we don't need an exact number.",
       unit: "dollars per month",
       rangeMessage:
         "Enter an amount between $0 and $100,000 a month. If you typed what you make in a year, use the monthly amount instead.",

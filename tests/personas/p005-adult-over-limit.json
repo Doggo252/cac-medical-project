@@ -1,6 +1,6 @@
 {
   "id": "p005-adult-over-limit",
-  "summary": "Devon, 45, single, earns $2,000/month — above the adult limit. The screener must say 'may not qualify this way' and still route to the county, never a hard no.",
+  "summary": "Devon, 45, single, earns $2,000/month, above the adult limit. The screener must say 'may not qualify this way' and still route to the county, never a hard no.",
   "answers": {
     "householdSize": 1,
     "monthlyIncomeUsd": 2000,

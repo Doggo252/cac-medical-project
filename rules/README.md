@@ -36,7 +36,7 @@ Never a blog, a news article, a summary site, or model memory.
 3. Fill in `source_url`, `source_name`, and `last_verified` (today's date).
 4. Bump `version` in the rule file.
 5. Update any golden persona in `/tests/personas/` marked
-   `"pending_rule_verification": true` that depends on this rule — its expected
+   `"pending_rule_verification": true` that depends on this rule; its expected
    outcome will move off `needs_human`.
 6. Run `npm test`. The full persona suite must pass.
 
@@ -64,5 +64,5 @@ Deliberate gaps, all of which the engine reports honestly instead of guessing:
   income, which can only under-promise, never over-promise.
 
 The 2027 FPL letter (expected ~January 2027) will obsolete every income rule at
-once — regenerate rather than hand-edit. The file is generated; keep the
+once, so regenerate rather than hand-edit. The file is generated; keep the
 generator's number tables in sync with the chart, not the other way around.
