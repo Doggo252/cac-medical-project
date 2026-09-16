@@ -39,3 +39,105 @@ intact. Confirmed the app opens and runs on the phone over wifi.
 Student-owned files remain empty placeholders, as intended: the classifier, the
 deadline rules and tests, the checker, the county-mistake rules, the prompts,
 the agent tool spec, and the generator design.
+
+## 2026-09-15 (second session)
+
+Files created or edited: `data/templates/` (16 PDFs downloaded or repaired),
+`data/handbook/` (two Santa Clara County pages moved here), `SOURCES.md`
+(rewritten with the URLs that actually work).
+
+What I did (Claude): diagnosed why most of the downloaded forms would not open.
+They were not damaged. `dhcs.ca.gov` is behind Imperva/Incapsula bot protection,
+so scripted downloads received a small HTML block page that had been saved under
+a `.pdf` filename. Worked out that the forms index uses `/file/<id>-pdf/`
+redirect links rather than direct `.pdf` paths, cleared the bot check in a real
+browser, and reused its session cookie to fetch the files. Found NA Back 9 on
+the CDSS site, since it is a CDSS form and appears on neither DHCS index, and
+found the MEDIL letters at their new addresses after the old DHCS letters index
+turned into a 404. Verified every file by opening it and reading its first page,
+then rewrote `SOURCES.md` with a table of file, document, page count and source
+URL, plus a note on the bot protection so this does not cost time again.
+
+What the student did: downloaded the first batch of forms by hand, noticed the
+files were unreadable, and reported it. The three that were already correct
+(`mc355_eng`, `mc355_spa`, `calsaws_renewal_factsheet`) were the student's
+manual downloads, and `mc355_spa` matched the official file byte for byte.
+
+Still open: the source link for `calsaws_renewal_factsheet.pdf` was not
+recorded at download time and needs to be added to `SOURCES.md`.
+
+## 2026-09-15 (third session)
+
+Files created or edited: `CLAUDE.md` and `CONTEXT.md` (replaced with the updated
+planning versions), `fullplan.md` renamed to `replyby-plan-v3-ai-first.md`,
+`SOURCES.md` (rewritten again, merging the fuller planning version with verified
+links), `NEXT_VERSION.md`, `data/templates/` (three more letters),
+`data/handbook/` (handbook index added), and a new `docs/student-guides/` folder
+with eight guides.
+
+What I did (Claude): took in the updated planning documents and applied the
+senior-track change through the repository. The main renewal form is now the
+MC 210 RV (non-MAGI, seniors and people with disabilities) rather than the
+MC 216, and asset reporting under ACWDL 25-14 adds a property supplement, so
+MC 216 and MC 217 moved to `NEXT_VERSION.md`. Downloaded and verified MEDIL
+I20-39, ACWDL 01-39 and ACWDL 23-15, and the county handbook index. Confirmed the
+CalSAWS fact sheet source URL, which was the open question left from the previous
+session; it matches the existing file byte for byte. Rewrote `SOURCES.md` to
+combine the planning version's research, law and partner sections with the links
+verified by download, and recorded two corrections: MC 239 A does exist as a
+public blank PDF, and NA Back 9 is a CDSS form that is not enclosed in ACWDL
+23-19. Wrote `docs/student-guides/`, one guide per student-owned file, each
+covering concepts, the decisions the student must make, a worked example in an
+unrelated domain, a done checklist, and the whiteboard question. No student-owned
+file was written or edited.
+
+What the student did: wrote and supplied the updated `CLAUDE.md`, `CONTEXT.md`
+and plan v3, which set the senior track, the ownership split, the story and the
+schedule. Chose the non-MAGI senior track. Sent the outreach emails to Ravenswood
+Family Health Network and Bay Area Legal Aid.
+
+Note on the guides: they explain and structure but do not contain the
+implementation of any student-owned file. The worked examples are deliberately
+set in other domains (spam filtering, library notices, pizza orders) so that the
+translation to Medi-Cal is the student's own work.
+
+## 2026-09-15 (fourth session)
+
+Files created or edited: `TODO.md` (new), `SOURCES.md`, `data/templates/`
+(two more PDFs).
+
+What I did (Claude): rebuilt the schedule against the hours actually available
+(9.5 per week, none on Monday) rather than the 12 per week plan v3 assumed, and
+saved it as `TODO.md` with the resulting 17.5 hour shortfall stated plainly and
+one recommended cut. Chased the remaining gaps in `SOURCES.md`: found the
+Spanish NA Back 9 (the filename is `NABACK9SP.PDF`, not `NABACK9.PDF` in a
+Spanish folder), found a stable `/file/` redirect for the DHCS 8249 hearing form
+to replace a raw upload path carrying a WordPress `-1` suffix, and established
+that DHCS publishes only one other MC 239 blank (the DRA-6 citizenship notice),
+which means the other MC 239 variants are assembled inside CalSAWS. Extracted
+and summarized the printed field structure of the MC 239 A and MC 355 so the
+student does not spend a one-hour slot reading PDFs.
+
+What the student did: set the real time budget, which changed the schedule
+materially. Postponed the generator design by a day, which is recorded in
+`TODO.md`.
+
+Note: the field inventory handed over is a reading of two public forms the
+student already has on disk. Every design decision it raises (whether denials
+are generated, whether there is an unknown class, what varies and by how much)
+was left open for the student to answer in `data/generator_design.md`.
+
+## 2026-09-16
+
+Files created or edited: `SOURCES.md` (section F), `TODO.md`.
+
+What I did (Claude): after Ravenswood declined, researched replacement partners
+in the district using web search and the organizations' own websites, and
+recorded verified contact details. Found that Ravenswood was the only north
+county clinic in the Community Health Partnership network, so recommended
+senior-focused organizations instead: SALA, Sourcewise HICAP, the Mountain View
+Senior Center, and the Legal Aid Society of San Mateo County. Added the outreach
+to the schedule. Drafted an email for the student to adapt; nothing was sent.
+
+What the student did: sent the original outreach, received and reported
+Ravenswood's reply, and decides who to contact and what to send.

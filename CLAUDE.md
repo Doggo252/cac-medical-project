@@ -75,7 +75,7 @@ AI-USE.md
 SOURCES.md              links to every official form and letter used
 NEXT_VERSION.md         ideas explicitly out of scope
 data/
-  templates/            official PDFs (MC 216, MC 355, NA Back 9, hearing request, MC 382)
+  templates/            official PDFs (MC 210 RV, MC 216, MC 355, NA Back 9, MC 382); see SOURCES.md
   handbook/             saved Santa Clara County handbook pages on notices
   generator_design.md   student-owned
   generate.py           you write; renders fake letters from the design
@@ -100,16 +100,16 @@ app/
 ## Domain facts (use these; do not invent others)
 
 **The three letters the app recognizes**
-1. Renewal packet cover letter with form MC 216 (pre-filled annual renewal, about 19 pages). Deadline: the due date printed on the cover letter.
+1. Renewal packet cover letter with form MC 210 RV (the pre-filled annual renewal for seniors and people with disabilities, the non-MAGI side of Medi-Cal). Since renewals due on or after January 1, 2026 it comes with a property supplement insert because asset reporting was reinstated (ACWDL 25-14). Deadline: the due date printed on the cover letter. The MC 216 (families) and MC 217 (mixed households) are the same idea for other groups and are next version.
 2. MC 355, Request for Information. The county allows 30 days for response.
-3. MC 239 A, discontinuance for not returning the renewal (and sibling MC 239 letters for not providing requested documents). Must list the missing items, the names it applies to, the regulations, and the right to a state hearing (printed on the NA Back 9 on the reverse).
+3. MC 239 A, discontinuance for not returning the renewal (and sibling MC 239 letters for not providing requested documents or asset information). Must list the missing items, the names it applies to, the regulations, and the right to a state hearing (printed on the NA Back 9 on the reverse).
 
 Anything else is "unknown" and gets the generic path.
 
 **Deadline rules the student will encode (with citations)**
 - Renewal due date: from the letter.
 - MC 355 response: 30 days from the notice date.
-- 90-day cure period after discontinuance: return the requested information within 90 days and Medi-Cal is reinstated back to the discontinuance date with no new application. W&IC 14005.37; DHCS MEDIL I14-60; I15-22E.
+- 90-day cure period after discontinuance: return the requested information within 90 days and Medi-Cal is reinstated back to the discontinuance date with no new application. W&IC 14005.37; DHCS MEDIL I14-60; I15-22E. Also applies to discontinuance for missing asset information (ACWDL 25-14).
 - State hearing request: within 90 days of the notice date. W&IC 10951. Benefits continue if requested before the effective date.
 - Covered California special enrollment: 90 days after discontinuance (shown as a safety net).
 
@@ -120,7 +120,7 @@ Anything else is "unknown" and gets the generic path.
 **Forms the app fills**
 - State hearing request (the form on the NA Back 9).
 - MC 355 response with attachments.
-- MC 216: do not retype the packet. Produce a checklist of sections to answer, a signature page, and a cover sheet with case number and page index.
+- MC 210 RV: do not retype the packet. Produce a checklist of sections to answer (including the property supplement), a signature page, and a cover sheet with case number and page index.
 - Rescission request letter (generated, cites the rules above).
 - MC 382 Appointment of Authorized Representative (next version).
 
