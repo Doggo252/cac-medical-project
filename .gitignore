@@ -1,22 +1,24 @@
-node_modules/
-lib/
-dist/
-coverage/
+# Generated and private data. Never committed.
+data/synthetic/
+data/real/
 
-# Firebase
-.firebase/
-firebase-debug.log
-firestore-debug.log
-ui-debug.log
-*-debug.log
-
-# Env / secrets: never commit Twilio, SendGrid, or service-account keys
+# Secrets. API keys live in backend/.env only.
 .env
 .env.*
 !.env.example
-serviceAccountKey.json
 
-# Editor / OS
+# JavaScript
+node_modules/
+dist/
+coverage/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Editor and OS
 .DS_Store
 .vscode/
 .idea/

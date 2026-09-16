@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+
+# Testing
+pytest
+httpx          # FastAPI's TestClient uses this to call the endpoints
+
+# Fake letter generator (data/generate.py)
+pillow
+pymupdf

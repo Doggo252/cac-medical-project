@@ -1,0 +1,65 @@
+/* Mobile first. This app is used standing in a kitchen holding a letter, so
+   everything is large, high contrast, and single column. */
+
+:root {
+  --ink: #16241f;
+  --ink-soft: #4a5b55;
+  --teal: #0f766e;
+  --line: #d8e2de;
+  --page: #f7faf9;
+
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--ink);
+  background: var(--page);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--page);
+}
+
+/* Keeps content clear of the notch and the home bar on a phone. */
+.screen {
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom));
+  padding-top: calc(1.5rem + env(safe-area-inset-top));
+}
+
+h1 {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+  color: var(--teal);
+}
+
+h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+}
+
+.tagline {
+  margin: 0.5rem 0 0;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.card {
+  margin-top: 1.75rem;
+  padding: 1.25rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 0.875rem;
+}
+
+.card p {
+  margin: 0;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
