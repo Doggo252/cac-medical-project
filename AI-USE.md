@@ -141,3 +141,33 @@ to the schedule. Drafted an email for the student to adapt; nothing was sent.
 
 What the student did: sent the original outreach, received and reported
 Ravenswood's reply, and decides who to contact and what to send.
+
+## 2026-09-16 (second session)
+
+Files created or edited: `SOURCES.md`, `data/templates/` (two CalSAWS PDFs).
+
+What I did (Claude): answered the student's question about how to specify date
+formats when the official forms are blank. Searched the templates and handbook
+for format evidence, and found and downloaded a CalSAWS example Notice of Action
+that shows the real computer-generated layout with placeholder fields. Corrected
+an earlier statement of mine: the 2007 MC 239 A blank gives the discontinuance as
+a month, but the CalSAWS notice uses a full date placeholder.
+
+What the student did: is writing `data/generator_design.md` and raised the
+question about missing formats. All design decisions remain the student's.
+
+## 2026-09-16 (third session)
+
+Files created or edited: `AI-USE.md` only. No project files edited by Claude.
+
+What I did (Claude): reviewed the student's draft of `data/generator_design.md`
+several times and pointed out gaps (missing blanks, vague ranges, a MAGI versus
+non-MAGI mix-up, the "Notice for" field). Explained how to handle unknown formats
+by writing labeled guesses. Looked up real Title 22 section numbers in ACWDL 25-14
+(sections 50175 and 50179 for missing information) for the student to choose
+from. Searched for a real filled MC 239 A online; none is public.
+
+What the student did: wrote the MC 239 A section of `data/generator_design.md`,
+chose the reasons and section numbers, and made three design decisions: only
+discontinuances, a 50-50 mix of the 2007 and CalSAWS layouts, and telling the
+user when they photograph the back of the notice.

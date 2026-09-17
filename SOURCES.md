@@ -3,7 +3,7 @@
 Every official form, letter, rule, and research source used by ReplyBy.
 Downloaded files live in `data/templates/` and `data/handbook/`.
 
-Last verified September 15, 2026. 23 PDFs and 3 HTML pages. Every file listed below was downloaded, opened,
+Last verified September 15, 2026. 25 PDFs and 3 HTML pages. Every file listed below was downloaded, opened,
 and checked: the page count and the first page of text match the document it
 claims to be.
 
@@ -101,6 +101,17 @@ Santa Clara County's own Medi-Cal handbook rather than as a PDF.
 | Medi-Cal Handbook home | Index of all chapters | `scc_handbook_index.html` | https://stgenssa.sccgov.org/debs/program_handbooks/medi-cal/index.htm |
 | Notices of Action chapter | What every NOA must contain; the MC 239 A rules (list only the missing items and the names they apply to; cite regulations and hearing rights); MC 355 is not a substitute for a NOA | `scc_noa_chapter.html` | https://stgenssa.sccgov.org/debs/program_handbooks/medi-cal/assets/12ReptChangeNOA/NOA.htm |
 | Redetermination forms chapter | Which renewal forms are used when; NOA required after every renewal decision | `scc_rd_forms.html` | https://stgenssa.sccgov.org/debs/program_handbooks/medi-cal/assets/10Redeterminations/MCRDForms.htm |
+
+### What a real computer-generated notice looks like (`data/templates/`)
+
+| Document | What it contains | File | Pages | Link |
+|---|---|---|---|---|
+| CalSAWS example Notice of Action, Non-MAGI denial/discontinuance | The layout CalSAWS actually prints, with every variable field shown as a placeholder such as `<DATE>`, `<Verifications>`, `<REGULATIONS>`. Form ID `MC 239/MC-MAGI-D (11/2015)`. Header has two case numbers (CalHEERS and SAWS) plus a customer ID. **This, not the 2007 blank MC 239 A, is closest to what a person photographs today.** | `calsaws_noa_example_nonmagi_disc.pdf` | 2 | http://www.calsaws.org/wp-content/uploads/2021/03/Non-MAGI_MAGI-Medi-Call-NOA-Phase-3-Non-MAGI-DenialDisc-MAGI-Denied-Example-v2-1.pdf |
+| CalSAWS fact sheet, Medi-Cal Renewal Discontinuances | How CalSAWS discontinues renewal cases. | `calsaws_renewal_discontinuances_factsheet.pdf` | 5 | https://www.calsaws.org/wp-content/uploads/2023/05/CIT-0183-23-Fact-Sheet-Medi-Cal-Renewal-Discontinuances.pdf |
+
+The example uses placeholders, so it shows **which** fields vary but not the
+printed **format** of dates or case numbers. No public document found so far
+shows a filled-in date. Confirm against a real letter.
 
 Note: the handbook index needs the explicit `index.htm`. The bare directory URL
 returns 404.
