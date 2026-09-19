@@ -171,3 +171,75 @@ What the student did: wrote the MC 239 A section of `data/generator_design.md`,
 chose the reasons and section numbers, and made three design decisions: only
 discontinuances, a 50-50 mix of the 2007 and CalSAWS layouts, and telling the
 user when they photograph the back of the notice.
+
+## 2026-09-17
+
+Files created or edited: `AI-USE.md` only. No project files edited by Claude.
+
+What I did (Claude): reviewed the student's `data/generator_design.md` several
+times as they wrote the MC 355 and MC 210 RV sections. Pointed out gaps (missing
+discontinuance month in the label list, the MC 355 30-day window, a 15 degree
+photo tilt being unrealistic). Searched for real filled examples of the MC 355
+and MC 210 RV; none are public. Found that page 45 of `acwdl_20-21.pdf` shows
+the MC 210 RV page 1 with every prepopulated field marked, which confirmed the
+renewal due date is printed as "Month day, Year". Explained that `labels.csv` is
+produced by the generator itself rather than gathered from the internet.
+
+What the student did: finished `data/generator_design.md`. Wrote the MC 355 and
+MC 210 RV sections, chose the photo variation split, the layout mix (70-30
+CalSAWS to 2007) with reasons, the label columns, and three hard cases per
+letter type.
+
+## 2026-09-18
+
+Files created or edited: `data/generate.py`, `data/test_generate.py`,
+`pytest.ini` (added `data` to the test folders).
+
+What I did (Claude): wrote the fake-letter generator from the student's
+`data/generator_design.md`. It fills the real MC 355 and MC 210 RV PDFs through
+their form fields, writes onto the 2007 MC 239 A at measured positions, and
+rebuilds the CalSAWS layout from the discontinuance wording of the CalSAWS
+example (the example itself mixes in denial text and a DRAFT watermark). It then
+applies the student's five photo effects and hard cases, and writes
+`labels.csv`. Added 7 tests checking the design's rules (10-day notice, 30-day
+MC 355 window, case number format, 70-30 layout split, reproducibility). Made a
+15-letter sample and a review sheet.
+
+Assumptions I made where the design was silent, all flagged to the student and
+set as constants at the top of the file: 60 days to return the renewal, 10% of
+letters get a hard case, and office hours / worker fax left blank in the labels
+when a layout does not print them.
+
+What the student did: wrote the design this code follows, and reviews the
+sample letters against the real forms.
+Update (2026-09-18): the student corrected the layout mix to 30% CalSAWS and
+70% 2007 form. Changed `CALSAWS_SHARE` and its test to match.
+Update (2026-09-18, later): at the student's request, filled-in values no longer
+all use one Arial-like font. Each letter now gets a "pen": one of five print
+fonts, or (50% of the time, on the fillable layouts) one of four handwriting
+fonts in black or blue ink with a slight wobble. Fonts come from macOS, so
+nothing was downloaded. The CalSAWS layout stays fully printed, since the county
+computer prints that whole page. Added a `writing` column to `labels.csv` and
+2 tests (text is shrunk rather than silently dropped; about half handwritten).
+Update (2026-09-18, later still): the student said the filled-in values looked
+pasted on. Each value now sits on the same line as its printed label at the
+label's size (measured from the PDF text), handwriting ink is slightly
+see-through, Marker Felt was dropped as too heavy, and a light shared blur,
+grain, and paper tint is applied to every page so the form and the values look
+like one printout. Fixed a bug where the 2007 form's header values were not
+drawn at all, and added a test that checks every value reaches the page.
+Update (2026-09-18, evening): spent more time on realism at the student's
+request. Rewrote the photo step: pages now lie on a gradient table surface
+with a cast shadow, get mild camera perspective, uneven light, darker corners,
+a warm or cool tint, sensor grain, and a random JPEG quality. The thumb is a
+shaded, out-of-focus shape instead of a flat oval; the bottom-cut photos now
+run the page off the frame instead of chopping a scan; folds have a soft
+crease. The county stamp on the 2007 form is now a real rubber-stamp image
+(patchy ink, slight rotation, optional date line). Mailing address blocks are
+printed even on handwritten letters, since they show through the envelope
+window. Fixed a bug where a random number inside a lookup table drew rings on
+every photo. 4 more tests (perspective math, every effect renders, hard cases
+render, stamp image).
+Update (2026-09-18, night): generated the full set, 800 letters per type
+(2,400 images, 812 MB, in the gitignored `data/synthetic/`). Splits match the
+design: 30% CalSAWS, 44% handwritten, 20% per photo type, 10% hard cases.
