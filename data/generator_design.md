@@ -146,4 +146,21 @@ App design decisions
 * Mix of both layouts CALSAWS/REGULAR (30-70), because I don't want to overtrain on CALSAWS data when clinics might not even use it.
 * Photos -- +- 5 degree angles should be accounted for, thumb photos, blurry/shadow/folded, bottom cut off. (Split: 20 (perfect)/20/20/20/20), because we need to account for variety, and I think doing it equally is good.
 * What the app should check for that was read correctly: filename, letter type, due date, discontinuance month, notice date, case number, worker name, worker ID number, worker fax number, worker telephone number, office hours, notice for. This is because we want to make sure the app gets all of the relevant information.
-* Handwritten vs. Font 50/50 to train the model on handwritten letters.
+* Handwritten vs. Font 20% handwritten /80% print to train the model on handwritten letters.
+* Read the due date off the letter, don't assume 30. You should never assume, and some letters may be different. Always try to extract info instead of assuming. - For generator, 5-30 days.
+
+
+What the real letters look like:
+* Everything is printed, there is no handwriting anywhere. Except for highlighting.
+* The case number in in this format: 1B5F324 (#L#L###) with no county/state code. It also says "SAWS Case Number". Next to the "SAWS Case Number" there is "CalHEERS Case Number" which was empty on my paperwork. 
+* Worker number is A695 format (L###).
+* Telephones were 408s.
+* Office hours is in this format: 8:00 AM- 12:00 PM, 1:00 PM - 5:00 PM
+* Address looks like this:
+1867 Senter RD
+San Jose CA 95112-2527
+* Dates are MM/DD/YYYY
+* The Notice for Action gave 8 days - (but it was an approval notice with a start date)
+* The request for information gave 12 days instead of the predicted 30. 
+
+Use ^^^ information rather than guesses.

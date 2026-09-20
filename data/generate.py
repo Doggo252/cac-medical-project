@@ -50,10 +50,10 @@ PHOTO_EFFECTS = ["clean", "tilt", "thumb", "blur_shadow_fold", "bottom_cut"]
 # one. Assumption: 10% of each letter type. Change it here.
 HARD_CASE_SHARE = 0.10
 
-# Neil, 2026-09-18: half the letters have their blanks filled in by hand.
-# (The CalSAWS layout is printed entirely by computer, so it is never
-# handwritten.)
-HANDWRITTEN_SHARE = 0.5
+# Design, "App design decisions": 20% handwritten, 80% printed. The real
+# letters were all printed. (The CalSAWS layout is printed entirely by
+# computer, so it is never handwritten.)
+HANDWRITTEN_SHARE = 0.2
 
 # Fonts already on a Mac, so nothing has to be downloaded. Any that are
 # missing are skipped. The forms' own printed words are Arial; the filled-in
@@ -69,8 +69,9 @@ HANDWRITING_FONTS = [f for f in HANDWRITING_FONTS if f.exists()]
 # Pen colors for handwriting: black, blue, dark blue.
 INK_COLORS = [(0.05, 0.05, 0.05), (0.1, 0.2, 0.6), (0.05, 0.1, 0.35)]
 
-# Design, MC 355: the county allows 30 days to respond.
-MC355_DAYS_TO_RESPOND = 30
+# Design, "App design decisions": 5 to 30 days to respond. (The real MC 355
+# gave 12.) The app reads the date off the letter instead of assuming.
+MC355_DAYS_TO_RESPOND = (5, 30)
 
 # Not in the design, and no source found yet. Assumption: 60 days to return
 # the renewal form. Check this against a real MC 210 RV.
@@ -159,20 +160,20 @@ def fake_phone(rng, area_codes):
     return f"({area}) {rng.randint(200, 999)}-{rng.randint(0, 9999):04d}"
 
 
-def fake_case_number(rng, county):
-    # Design: 7 to 9 characters, starting with a county code.
-    # Santa Clara is county 43 and San Mateo is 41 in California's numbering.
-    code = COUNTIES[county]["code"]
-    rest_length = rng.randint(5, 7)
-    letters = "ABCDEFGHJKLMNPRSTUVWXYZ"
-    rest = "".join(rng.choice("0123456789" + letters) if i == 0 else rng.choice("0123456789")
-                   for i in range(rest_length))
-    return code + rest
+LETTERS = "ABCDEFGHJKLMNPRSTUVWXYZ"  # no I, O or Q, which look like digits
+
+
+def fake_case_number(rng, county=None):
+    # Design, "What the real letters look like": digit, letter, digit,
+    # letter, then 3 digits (#L#L###), with no county code.
+    d = lambda: rng.choice("0123456789")
+    l = lambda: rng.choice(LETTERS)
+    return d() + l() + d() + l() + d() + d() + d()
 
 
 def fake_worker_id(rng):
-    # Design: "MED - digits, or NUR - digits".
-    return f"{rng.choice(['MED', 'NUR'])}-{rng.randint(100, 99999)}"
+    # Design, real letters: one letter then 3 digits (L###).
+    return rng.choice(LETTERS) + f"{rng.randint(0, 999):03d}"
 
 
 def fake_office_hours(rng, use_24_hour=False):
@@ -181,8 +182,11 @@ def fake_office_hours(rng, use_24_hour=False):
     if use_24_hour:
         # Hard case (MC 239 A): office hours in 24-hour time.
         return f"{start:02d}:00 - {end + 12:02d}:00"
-    return rng.choice([f"{start}:00 a.m. - {end}:00 p.m.", f"{start}am-{end}pm",
-                       f"{start}:00 AM to {end}:00 PM"])
+    # Design, real letters: a morning block and an afternoon block, with the
+    # office closed for lunch. Most letters use that; some a single block.
+    if rng.random() < 0.75:
+        return f"{start}:00 AM- 12:00 PM, 1:00 PM - {end}:00 PM"
+    return f"{start}:00 AM - {end}:00 PM"
 
 
 def fake_address(rng, county):
@@ -190,7 +194,10 @@ def fake_address(rng, county):
     street = f"{rng.randint(10, 9999)} {rng.choice(STREETS)}"
     if rng.random() < 0.3:
         street += f" Apt {rng.randint(1, 40)}"
-    return street, f"{city}, CA {zip_code}"
+    # Design, real letters: 9-digit ZIP codes. One real letter had a comma
+    # after the city and the other did not, so both appear.
+    comma = "," if rng.random() < 0.5 else ""
+    return street, f"{city}{comma} CA {zip_code}-{rng.randint(0, 9999):04d}"
 
 
 def last_day_of_month(year, month):
@@ -224,7 +231,7 @@ def make_facts(letter_type, rng):
     if rng.random() < HARD_CASE_SHARE:
         hard_case = {
             "MC_239A": rng.choice(["office_hours_24h", "effective_exactly_10_days", "five_plus_reasons"]),
-            "MC355": rng.choice(["out_of_area_phone", "shifted_page"]),
+            "MC355": rng.choice(["out_of_area_phone", "shifted_page", "exactly_30_days"]),
             "MC210_RV": rng.choice(["long_name", "big_due_date", "diagonal_lines"]),
         }[letter_type]
 
@@ -260,12 +267,14 @@ def make_facts(letter_type, rng):
             facts["discontinuance_date"] = first_allowed_discontinuance(notice)
         facts["reason"] = make_reason(rng, many=(hard_case == "five_plus_reasons"))
         # CalSAWS notices carry more ID numbers than the 2007 form.
-        facts["calheers_number"] = str(rng.randint(10_000_000, 99_999_999))
+        # Design, real letters: the CalHEERS number was blank, so half are.
+        facts["calheers_number"] = str(rng.randint(10_000_000, 99_999_999)) if rng.random() < 0.5 else ""
         facts["customer_id"] = str(rng.randint(1_000_000, 9_999_999))
 
     elif letter_type == "MC355":
         facts["layout"] = "mc355"
-        facts["due_date"] = notice + timedelta(days=MC355_DAYS_TO_RESPOND)
+        days = 30 if hard_case == "exactly_30_days" else rng.randint(*MC355_DAYS_TO_RESPOND)
+        facts["due_date"] = notice + timedelta(days=days)
         area_codes = OTHER_AREA_CODES if hard_case == "out_of_area_phone" else LOCAL_AREA_CODES
         facts["worker_phone"] = fake_phone(rng, area_codes)
         # Design: the fax usually shares the office's area code.
@@ -519,6 +528,9 @@ def build_mc239a_2007(facts):
         # The printed line holding the label tells us its baseline and size.
         line = next(sp for sp in spans if pymupdf.Rect(sp["bbox"]).contains(where.tl + (1, 1)))
         size = (line["bbox"][3] - line["bbox"][1]) / 1.15
+        _, font = load_pen(page, pen)
+        while size > 4 and where.x1 + 3 + font.text_length(value, size * pen["scale"]) > 562:
+            size -= 0.25
         fill(page, where.x1 + 3, line["origin"][1], value, size, pen, rng)
 
     # Name and address in the window-envelope box on the left.

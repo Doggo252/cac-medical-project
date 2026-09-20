@@ -28,17 +28,21 @@ def test_hard_case_exactly_10_days_is_exactly_10_days():
         assert (facts["discontinuance_date"] - facts["notice_date"]).days == 10
 
 
-def test_mc355_gives_30_days():
-    for facts in many_facts("MC355"):
-        assert (facts["due_date"] - facts["notice_date"]).days == 30
+def test_mc355_gives_5_to_30_days():
+    for facts in many_facts("MC355", 1000):
+        days = (facts["due_date"] - facts["notice_date"]).days
+        assert 5 <= days <= 30
+        if facts["hard_case"] == "exactly_30_days":
+            assert days == 30
 
 
-def test_case_numbers_are_7_to_9_characters_with_a_county_code():
+def test_case_numbers_and_worker_ids_match_the_real_letters():
+    import re
     for letter_type in g.LETTER_TYPES:
         for facts in many_facts(letter_type, 100):
-            number = facts["case_number"]
-            assert 7 <= len(number) <= 9
-            assert number[:2] in ("41", "43")
+            assert re.fullmatch(r"\d[A-Z]\d[A-Z]\d{3}", facts["case_number"])
+            assert re.fullmatch(r"[A-Z]\d{3}", facts["worker_id"])
+            assert re.search(r" CA \d{5}-\d{4}$", facts["address"][1])
 
 
 def test_calsaws_share_is_about_30_percent():
@@ -76,14 +80,14 @@ def test_long_handwritten_text_is_shrunk_not_dropped():
         assert "following information" in page.get_text().replace("\xa0", " ")
 
 
-def test_about_half_are_handwritten_and_calsaws_never_is():
+def test_about_a_fifth_are_handwritten_and_calsaws_never_is():
     facts = many_facts("MC_239A", 2000) + many_facts("MC355", 1000)
     for f in facts:
         if f["layout"] == "calsaws":
             assert f["pen"]["writing"] == "printed"
     fillable = [f for f in facts if f["layout"] != "calsaws"]
     share = sum(f["pen"]["writing"] == "handwritten" for f in fillable) / len(fillable)
-    assert 0.45 < share < 0.55
+    assert 0.15 < share < 0.25
 
 
 def test_every_value_actually_lands_on_the_page():
