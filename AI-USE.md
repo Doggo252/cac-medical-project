@@ -16,7 +16,7 @@ Entries are appended newest last.
 ## 2026-09-15
 Files created or edited: repository layout, `app/`, `backend/`, `Makefile`, `SOURCES.md`, `NEXT_VERSION.md`, `TODO.md`, `docs/student-guides/`, `data/templates/`, `data/handbook/`.
 What I did: set up the app shell, backend, and tests; downloaded and verified the official forms; wrote study guides for the student-owned files; built the schedule.
-What the student did: wrote the planning documents and CLAUDE.md, set the scope and time budget, contacted partner organizations, tested the app on a phone.
+What the student did: chose the idea and scope in earlier planning chats with Claude (which drafted the planning documents), set the time budget, contacted partner organizations, tested the app on a phone.
 
 ## 2026-09-16
 Files created or edited: `SOURCES.md`, `TODO.md`, `data/templates/`.

@@ -23,3 +23,10 @@ __pycache__/
 .vscode/
 .idea/
 *.tsbuildinfo
+
+# Local-only files. Kept on this laptop, not pushed to GitHub.
+.claude/
+.firebaserc
+CLAUDE.md
+TODO.md
+replyby-plan-v3-ai-first.md
