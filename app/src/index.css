@@ -63,3 +63,79 @@ h2 {
   line-height: 1.55;
   color: var(--ink-soft);
 }
+
+/* Buttons are big on purpose: easy to hit with a thumb, easy to read. */
+.button {
+  display: block;
+  width: 100%;
+  margin-top: 0.875rem;
+  padding: 1rem 1.25rem;
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--teal);
+  background: #fff;
+  border: 2px solid var(--teal);
+  border-radius: 0.875rem;
+  cursor: pointer;
+}
+
+.button.primary {
+  margin-top: 1.75rem;
+  color: #fff;
+  background: var(--teal);
+}
+
+.button.quiet {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  border: 1px dashed var(--line);
+}
+
+.hint {
+  margin-top: 1.25rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.error {
+  margin-top: 1.5rem;
+  padding: 0.875rem 1rem;
+  color: #8a1c1c;
+  background: #fdecec;
+  border-radius: 0.75rem;
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  margin-top: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 0.875rem;
+}
+
+progress {
+  width: 100%;
+  height: 0.75rem;
+  margin: 0.5rem 0;
+  accent-color: var(--teal);
+}
+
+.meta {
+  margin-bottom: 0.75rem !important;
+  font-size: 0.9rem;
+}
+
+/* The raw text the reader found. Monospace keeps columns lined up. */
+.ocr-text {
+  margin: 0;
+  max-height: 24rem;
+  overflow: auto;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  color: var(--ink);
+}

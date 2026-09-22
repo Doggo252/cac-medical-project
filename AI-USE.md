@@ -34,6 +34,6 @@ What I did: wrote the fake-letter generator from the student's design and improv
 What the student did: reviewed the sample letters and directed the changes (fonts, handwriting, layout mix).
 
 ## 2026-09-20
-Files created or edited: `data/generate.py`, `data/test_generate.py`, `data/real/`, `docs/problem-statement.md`.
-What I did: compared two real letters with the design; updated the generator to the real formats; edited the wording of the student's problem statement; researched fax services.
+Files created or edited: `data/generate.py`, `data/test_generate.py`, `data/real/`, `docs/problem-statement.md`, `app/src/Capture.tsx`, `app/src/ocr.ts`, `app/src/image.ts`, `app/scripts/copy-ocr-files.mjs`.
+What I did: compared two real letters with the design; updated the generator to the real formats; edited the wording of the student's problem statement; researched fax services; built the photo capture and on-phone text reading (OCR) screen.
 What the student did: collected and redacted real letters, updated the design from them, wrote the problem statement, chose the app name (ReplyBy), sent outreach emails.
