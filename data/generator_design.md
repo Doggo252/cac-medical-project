@@ -148,6 +148,16 @@ App design decisions
 * What the app should check for that was read correctly: filename, letter type, due date, discontinuance month, notice date, case number, worker name, worker ID number, worker fax number, worker telephone number, office hours, notice for. This is because we want to make sure the app gets all of the relevant information.
 * Handwritten vs. Font 20% handwritten /80% print to train the model on handwritten letters.
 * Read the due date off the letter, don't assume 30. You should never assume, and some letters may be different. Always try to extract info instead of assuming. - For generator, 5-30 days.
+* Fourth type - any other random letter the inner pages of the MC 355 and MC 210 RV, the NA Back 9, the MC 216, MC 217, MC 382, and MC 380, the hearing form, fake approval notices also (modeled on the real one), same photo/handwriting effects
+    * 800 - same as other types (based on commodity - how common they are)
+        Fake approval notices	200
+        MC 355 inner pages	150
+        MC 210 RV inner pages	150
+        NA Back 9	100
+        MC 216	60
+        MC 217, MC 382	40 each
+        MC 380, hearing form	30 each
+* Reason - because this is a common thing to occur - people putting in the wrong form, and we should have some way to know what to do with them
 
 
 What the real letters look like:

@@ -90,7 +90,40 @@ LABEL_COLUMNS = [
     "office_hours", "notice_for", "layout", "photo_effect", "hard_case", "writing",
 ]
 
-LETTER_TYPES = ["MC_239A", "MC355", "MC210_RV"]
+LETTER_TYPES = ["MC_239A", "MC355", "MC210_RV", "OTHER"]
+
+# Design, "Fourth type": the OTHER pile is anything that is not one of the
+# three letters. Numbers are from the design, out of 800, based on how often
+# each would really get photographed.
+OTHER_SPLIT = [
+    ("approval", 200),        # fake approval notices, modeled on a real one
+    ("mc355_inner", 150),     # pages 2 and 3 of the MC 355
+    ("mc210rv_inner", 150),   # pages 2 onward of the MC 210 RV
+    ("na_back_9", 100),       # the hearing rights page on the back of notices
+    ("mc216", 60),
+    ("mc217", 40),
+    ("mc382", 40),
+    ("mc380", 30),
+    ("hearing_form", 30),     # DHCS 8249, the state hearing request
+]
+# One kind per OTHER letter, in a fixed shuffled order, so 800 letters get
+# exactly the design's numbers.
+OTHER_SCHEDULE = [kind for kind, count in OTHER_SPLIT for _ in range(count)]
+random.Random("other-schedule").shuffle(OTHER_SCHEDULE)
+
+# Which template file each blank-page kind comes from, and which pages count.
+# None means "any page, but mostly page 1", since page 1 is what people
+# photograph.
+OTHER_TEMPLATES = {
+    "mc355_inner": ("mc355_eng.pdf", "inner"),
+    "mc210rv_inner": ("mc210rv_eng.pdf", "inner"),
+    "na_back_9": ("na_back_9_eng.pdf", None),
+    "mc216": ("mc216_eng.pdf", None),
+    "mc217": ("mc217_eng.pdf", None),
+    "mc382": ("mc382.pdf", None),
+    "mc380": ("mc380.pdf", None),
+    "hearing_form": ("state_hearing_request.pdf", None),
+}
 
 # ----------------------------------------------------------------------------
 # Lists of fake values to pick from
@@ -224,7 +257,7 @@ def date_words(d):
 # Step 1: pick the facts for one letter (this becomes its row in labels.csv)
 # ----------------------------------------------------------------------------
 
-def make_facts(letter_type, rng):
+def make_facts(letter_type, rng, index=0):
     county = rng.choice(list(COUNTIES))
     person = fake_name(rng)
     hard_case = ""
@@ -233,6 +266,7 @@ def make_facts(letter_type, rng):
             "MC_239A": rng.choice(["office_hours_24h", "effective_exactly_10_days", "five_plus_reasons"]),
             "MC355": rng.choice(["out_of_area_phone", "shifted_page", "exactly_30_days"]),
             "MC210_RV": rng.choice(["long_name", "big_due_date", "diagonal_lines"]),
+            "OTHER": "",  # the design gives no hard cases for the OTHER pile
         }[letter_type]
 
     # Design: notice date is any day in the past month or two.
@@ -280,6 +314,24 @@ def make_facts(letter_type, rng):
         # Design: the fax usually shares the office's area code.
         facts["worker_fax"] = fake_phone(rng, [facts["worker_phone"][1:4]])
 
+    elif letter_type == "OTHER":
+        kind = OTHER_SCHEDULE[index % len(OTHER_SCHEDULE)]
+        facts["layout"] = kind
+        if kind == "approval":
+            # Coverage starts on the 1st of the notice month or the month
+            # before (the real approval started before its notice date).
+            first = notice.replace(day=1)
+            facts["start_date"] = first if rng.random() < 0.5 else (first - timedelta(days=1)).replace(day=1)
+            facts["office_address"] = fake_address(rng, county)
+            facts["calheers_number"] = ""
+        else:
+            file_name, pages = OTHER_TEMPLATES[kind]
+            count = len(pymupdf.open(TEMPLATES / file_name))
+            if pages == "inner":
+                facts["page"] = rng.randint(1, count - 1)
+            else:
+                facts["page"] = 0 if rng.random() < 0.7 else rng.randint(0, count - 1)
+
     else:  # MC210_RV
         facts["layout"] = "mc210rv"
         facts["due_date"] = notice + timedelta(days=RENEWAL_DAYS_TO_RESPOND)
@@ -292,7 +344,9 @@ def make_facts(letter_type, rng):
         facts["office_address"] = fake_address(rng, county)
         facts["office_phone"] = fake_phone(rng, LOCAL_AREA_CODES)
 
-    facts["pen"] = pick_pen(rng, can_handwrite=(facts["layout"] != "calsaws"))
+    # CalSAWS and approval notices are printed whole by the county computer,
+    # and blank pages have nothing to fill in, so none of them are handwritten.
+    facts["pen"] = pick_pen(rng, can_handwrite=(facts["layout"] != "calsaws" and letter_type != "OTHER"))
     # The name and address show through the envelope window, so they are
     # printed on a label even when a worker filled in the rest by hand.
     facts["label_pen"] = pick_pen(rng, can_handwrite=False)
@@ -694,8 +748,83 @@ def build_mc210rv(facts):
     return doc
 
 
+def build_approval(facts):
+    """A fake approval notice, laid out like the real one Neil collected
+    (data/real/, which is never used for training). Only the form's printed
+    wording is copied; every name and number is fake."""
+    doc = pymupdf.open()
+    page = doc.new_page(width=612, height=792)
+    street, city = facts["address"]
+    office_street, office_city = facts["office_address"]
+    county = facts["county"]
+    start = facts["start_date"].strftime("%m/%d/%Y")
+
+    write(page, 40, 52, "NOTICE OF ACTION", size=13, bold=True)
+    write(page, 232, 52, f"COUNTY OF  {county.upper()}", size=11)
+    write_box(page, (430, 38, 580, 70),
+              "STATE OF CALIFORNIA\nHEALTH AND HUMAN SERVICES AGENCY\nCALIFORNIA DEPARTMENT OF SOCIAL SERVICES",
+              size=5.5)
+    fields = [
+        ("Notice Date", date_numbers(facts["notice_date"])),
+        ("Case Name", facts["notice_for"]),
+        ("SAWS Case Number", facts["case_number"]),
+        ("CalHEERS Case Number", facts["calheers_number"]),
+        ("Worker Name", facts["worker_name"]),
+        ("Worker Number", facts["worker_id"]),
+        ("Telephone", facts["worker_phone"]),
+        ("Worker Hours", facts["office_hours"]),
+        ("24Hour Information", facts["worker_phone"]),
+        ("Address", office_street),
+        ("", office_city),
+    ]
+    for i, (label, value) in enumerate(fields):
+        y = 80 + i * 10
+        write(page, 322, y, label, size=7.5)
+        write(page, 428, y, f": {value}" if label else f"  {value}", size=7.5)
+    write_box(page, (60, 178, 300, 220), f"{facts['notice_for']}\n{street}\n{city}", size=9)
+    write(page, 322, 206, "Questions?  Ask your Worker.", size=9)
+    write_box(page, (322, 214, 580, 262),
+              "State Hearing: If you think this action is wrong, you can ask for a state hearing. "
+              "The back of this page tells you how. Your benefits may not be changed if you ask "
+              "for a hearing before this action takes place.", size=8.5)
+    body = (
+        "Thank you for applying for health insurance for you and your household members. We used "
+        "the information you gave us and state and federal data to make this decision.\n\n"
+        "Your health care eligibility has been determined for the following member(s) of your family.\n\n"
+        f"This notice applies to:\n{facts['notice_for']}\n\n"
+        "The individual health care eligibility determinations are detailed below:\n\n"
+        f"This notice applies to: {facts['notice_for']}\n\n"
+        f"Beginning {start}, you are eligible to receive Medi-Cal benefits without a share-of-cost "
+        "under the Aged and Disabled Federal Poverty Level Program.\n\n"
+        f"For {facts['notice_for']}, under this program you will receive full Medi-Cal benefits.\n\n"
+        "You will receive a Benefits Identification Card (BIC) if you do not already have one. "
+        "DO NOT THROW AWAY YOUR PLASTIC BIC.\n\n"
+        "Rules: These rules apply. You may review them at your welfare office. Welfare & Inst. Code: 14005.40"
+    )
+    write_box(page, (40, 272, 575, 560), body, size=9.5)
+    page.draw_line((40, 566), (575, 566), width=0.8)
+    write(page, 40, 580, "MC 239 A&D (05/07)  MC Approval - Aged & Disabled FPL Program", size=8)
+    page.draw_line((40, 745), (575, 745), width=0.8)
+    write(page, 520, 757, "PAGE 1 OF 2", size=7)
+    return doc
+
+
+def build_other_page(facts):
+    """One page of a form that is not one of the three letters, left blank."""
+    file_name, _ = OTHER_TEMPLATES[facts["layout"]]
+    doc = pymupdf.open(TEMPLATES / file_name)
+    doc.select([facts["page"]])
+    page = doc[0]
+    # Empty form boxes would show up as grey rectangles, which paper does not have.
+    for widget in list(page.widgets()):
+        page.delete_widget(widget)
+    return doc
+
+
 def build_letter(facts):
     """The filled-in letter as a one-page PDF."""
+    if facts["letter_type"] == "OTHER":
+        return build_approval(facts) if facts["layout"] == "approval" else build_other_page(facts)
     if facts["letter_type"] == "MC_239A":
         return build_mc239_calsaws(facts) if facts["layout"] == "calsaws" else build_mc239a_2007(facts)
     if facts["letter_type"] == "MC355":
@@ -960,7 +1089,11 @@ def label_row(filename, facts, effect):
     compare easily. Anything not printed on this letter is left blank."""
     iso = lambda d: d.isoformat() if d else ""
     disc = facts["discontinuance_date"]
-    shows_office_hours = facts["layout"] in ("2007", "mc355")
+    if facts["letter_type"] == "OTHER" and facts["layout"] != "approval":
+        # A blank page has nothing printed on it but the form itself.
+        facts = {**facts, "notice_date": None, "case_number": "", "worker_name": "", "worker_id": "",
+                 "worker_phone": "", "office_hours": "", "notice_for": ""}
+    shows_office_hours = facts["layout"] in ("2007", "mc355", "approval")
     return {
         "filename": filename,
         "letter_type": facts["letter_type"],
@@ -990,7 +1123,7 @@ def generate(per_type, seed, out_dir=OUT_DIR):
             # Each letter gets its own random generator, so letter 57 always
             # comes out the same no matter how many letters are made.
             rng = random.Random(f"{seed}-{letter_type}-{i}")
-            facts = make_facts(letter_type, rng)
+            facts = make_facts(letter_type, rng, index=i)
             # Design: photo effects split evenly, 20% each.
             effect = PHOTO_EFFECTS[i % len(PHOTO_EFFECTS)]
             image = make_photo(printed_together(draw_letter(facts), rng), effect, facts, rng)

@@ -139,3 +139,10 @@ progress {
   white-space: pre-wrap;
   color: var(--ink);
 }
+
+.answer {
+  margin: 0 !important;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--teal) !important;
+}

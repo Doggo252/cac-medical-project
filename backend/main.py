@@ -20,8 +20,12 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+
+from backend import llm
+from backend.redact import redact
 
 # Read backend/.env into environment variables. Doing it by explicit path means
 # it works no matter which folder the server was started from.
@@ -51,6 +55,40 @@ def health():
     return {
         "status": "ok",
         "service": "replyby-backend",
-        "anthropic_key_loaded": bool(os.getenv("ANTHROPIC_API_KEY")),
+        "llm_key_loaded": bool(os.getenv("GEMINI_API_KEY")),
         "fax_key_loaded": bool(os.getenv("FAX_API_KEY")),
     }
+
+
+# Reader A ------------------------------------------------------------------
+
+PROMPTS = Path(__file__).parent.parent / "prompts"
+
+# The fields Neil's prompt (prompts/extract.md) asks the model for. Keep this
+# list the same as the JSON shape in that file. Anything the model leaves out
+# comes back as null, and anything extra is dropped.
+EXTRACT_FIELDS = [
+    "letter_type", "notice_date", "effective_date", "ask", "appeal_language",
+    "case_number", "worker_name", "worker_phone", "due_date", "certainty",
+]
+
+
+class LetterText(BaseModel):
+    text: str
+
+
+@app.post("/extract")
+def extract(letter: LetterText):
+    """Reader A: the AI reads the letter text and returns its facts."""
+    # The phone already scrubbed the text. Scrub it again here, in case of a
+    # bug in the app.
+    clean, blanked = redact(letter.text)
+    prompt = (PROMPTS / "extract.md").read_text().replace("{text}", clean)
+    try:
+        answer = llm.ask_for_json(prompt)
+    except llm.LLMError as error:
+        raise HTTPException(status_code=503, detail=str(error))
+    if not isinstance(answer, dict):
+        raise HTTPException(status_code=503, detail="model did not return an object")
+    facts = {field: answer.get(field) for field in EXTRACT_FIELDS}
+    return {"facts": facts, "redacted": blanked}

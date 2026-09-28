@@ -54,10 +54,10 @@ def test_calsaws_share_is_about_30_percent():
 def test_generate_writes_images_and_labels(tmp_path):
     g.generate(per_type=1, seed=5, out_dir=tmp_path)
     images = sorted((tmp_path / "images").glob("*.jpg"))
-    assert len(images) == 3
+    assert len(images) == 4
     with open(tmp_path / "labels.csv") as f:
         rows = list(csv.DictReader(f))
-    assert len(rows) == 3
+    assert len(rows) == 4
     assert list(rows[0].keys()) == g.LABEL_COLUMNS
     assert {r["letter_type"] for r in rows} == set(g.LETTER_TYPES)
 
@@ -94,7 +94,7 @@ def test_every_value_actually_lands_on_the_page():
     # Catches values that silently fail to draw (this happened once on the
     # 2007 form). Checks each letter type, layout, and pen.
     seen = set()
-    for letter_type in g.LETTER_TYPES:
+    for letter_type in ["MC_239A", "MC355", "MC210_RV"]:
         for i in range(400):
             facts = g.make_facts(letter_type, random.Random(f"land-{i}"))
             kind = (letter_type, facts["layout"], facts["pen"]["writing"])
@@ -149,3 +149,34 @@ def test_stamp_is_a_valid_png():
     png = g.stamp_png("Santa Clara", date(2026, 9, 4), random.Random(3))
     img = Image.open(io.BytesIO(png))
     assert img.mode == "RGBA" and img.width > 800
+
+
+def test_other_pile_follows_the_design_numbers():
+    from collections import Counter
+    counts = Counter(g.OTHER_SCHEDULE)
+    assert sum(counts.values()) == 800
+    assert counts == dict(g.OTHER_SPLIT)
+
+
+def test_approval_notice_is_filled_in_and_blank_pages_have_no_person():
+    for i, kind in enumerate(g.OTHER_SCHEDULE):
+        if kind == "approval":
+            facts = g.make_facts("OTHER", random.Random(i), index=i)
+            text = g.build_letter(facts)[0].get_text().replace("\xa0", " ")
+            assert "MC Approval" in text and facts["notice_for"] in text and facts["case_number"] in text
+            break
+    for i, kind in enumerate(g.OTHER_SCHEDULE):
+        if kind == "mc355_inner":
+            facts = g.make_facts("OTHER", random.Random(i), index=i)
+            row = g.label_row("x.jpg", facts, "clean")
+            assert row["letter_type"] == "OTHER" and row["case_number"] == "" and row["notice_for"] == ""
+            assert "MC 355" in g.build_letter(facts)[0].get_text()
+            break
+
+
+def test_every_other_kind_renders():
+    for kind in dict(g.OTHER_SPLIT):
+        i = g.OTHER_SCHEDULE.index(kind)
+        facts = g.make_facts("OTHER", random.Random(i), index=i)
+        image = g.draw_letter(facts)
+        assert image.width > 600, kind

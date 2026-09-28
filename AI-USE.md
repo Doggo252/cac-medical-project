@@ -37,3 +37,23 @@ What the student did: reviewed the sample letters and directed the changes (font
 Files created or edited: `data/generate.py`, `data/test_generate.py`, `data/real/`, `docs/problem-statement.md`, `app/src/Capture.tsx`, `app/src/ocr.ts`, `app/src/image.ts`, `app/scripts/copy-ocr-files.mjs`.
 What I did: compared two real letters with the design; updated the generator to the real formats; edited the wording of the student's problem statement; researched fax services; built the photo capture and on-phone text reading (OCR) screen.
 What the student did: collected and redacted real letters, updated the design from them, wrote the problem statement, chose the app name (ReplyBy), sent outreach emails.
+
+## 2026-09-22 to 2026-09-24
+Files created or edited: none.
+What I did: quizzed the student on the classifier concepts and checked his hand-worked example; reviewed drafts of `prompts/extract.md` and pointed out problems.
+What the student did: worked the Naive Bayes example by hand; wrote `prompts/extract.md`.
+
+## 2026-09-25
+Files created or edited: `app/src/redact.ts`, `app/src/redact.test.ts`, `backend/redact.py`, `backend/tests/test_redact.py`.
+What I did: wrote the redaction code (on the phone, with a server-side backup) and its tests.
+What the student did: decided the redaction rule: blank case numbers, ID numbers, names and addresses; keep the worker's details.
+
+## 2026-09-26
+Files created or edited: `data/extract_text.py`.
+What I did: wrote the script that saves each fake letter's text for training; reviewed the student's classifier as he wrote it and pointed out bugs.
+What the student did: wrote `core/classifier.py` by hand (tokenize, train, predict, save, load).
+
+## 2026-09-27
+Files created or edited: `app/src/classify.ts`, `app/src/Capture.tsx`, `app/src/redact.ts`, `backend/main.py`, `backend/llm.py`, `backend/redact.py`, their tests, `core/eval/ocr_accuracy.py`, `core/eval/reader_b_ocr.md`, `data/generate.py`.
+What I did: reviewed the student's training script; wrote the browser version of his classifier; built Reader A (the `/extract` endpoint using Gemini); installed Tesseract, measured the classifier on OCR text, and hardened the redaction after testing it on OCR output and the real letters; added the student's OTHER pile to the generator.
+What the student did: wrote `core/train_classifier.py`; designed the fourth "OTHER" letter type and its mix; retrained the classifier on four types (98.4%); set up the Gemini API key.

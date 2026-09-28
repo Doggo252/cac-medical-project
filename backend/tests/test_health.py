@@ -18,4 +18,4 @@ def test_health_never_leaks_a_key():
     body = client.get("/health").json()
     for key, value in body.items():
         assert not isinstance(value, str) or "sk-" not in value
-    assert set(body) == {"status", "service", "anthropic_key_loaded", "fax_key_loaded"}
+    assert set(body) == {"status", "service", "llm_key_loaded", "fax_key_loaded"}

@@ -7,11 +7,23 @@
 import { useEffect, useState } from 'react'
 import { prepareImage } from './image'
 import { readText, type OcrResult } from './ocr'
+import { loadModel, predict, type Model } from './classify'
+
+// Plain names for the three letter types Reader B knows.
+const LETTER_NAMES: Record<string, string> = {
+  MC_239A: 'MC 239 A: your Medi-Cal is being stopped',
+  MC355: 'MC 355: the county needs more information',
+  MC210_RV: 'MC 210 RV: your yearly renewal form',
+  OTHER: 'Not one of the three letters this app handles yet',
+}
+
+// The model is loaded once and kept, since it never changes while the app runs.
+let model: Model | null = null
 
 type Stage =
   | { name: 'idle' }
   | { name: 'reading'; progress: number }
-  | { name: 'done'; result: OcrResult }
+  | { name: 'done'; result: OcrResult; readerB: string }
   | { name: 'error'; message: string }
 
 export default function Capture() {
@@ -32,7 +44,10 @@ export default function Capture() {
       const image = await prepareImage(file)
       setPhotoUrl(URL.createObjectURL(image))
       const result = await readText(image, (progress) => setStage({ name: 'reading', progress }))
-      setStage({ name: 'done', result })
+      // Reader B: Neil's classifier, running on the phone.
+      model ??= await loadModel()
+      const readerB = predict(model, result.text).letterType
+      setStage({ name: 'done', result, readerB })
     } catch (error) {
       console.error(error)
       setStage({ name: 'error', message: 'Could not read that photo. Please try again.' })
@@ -97,6 +112,10 @@ export default function Capture() {
 
       {stage.name === 'done' && (
         <>
+          <div className="card">
+            <h2>Reader B thinks this is</h2>
+            <p className="answer">{LETTER_NAMES[stage.readerB] ?? stage.readerB}</p>
+          </div>
           <div className="card">
             <h2>What the app read</h2>
             <p className="meta">Reader confidence: {Math.round(stage.result.confidence)}%</p>
