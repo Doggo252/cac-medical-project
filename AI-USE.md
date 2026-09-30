@@ -57,3 +57,8 @@ What the student did: wrote `core/classifier.py` by hand (tokenize, train, predi
 Files created or edited: `app/src/classify.ts`, `app/src/Capture.tsx`, `app/src/redact.ts`, `backend/main.py`, `backend/llm.py`, `backend/redact.py`, their tests, `core/eval/ocr_accuracy.py`, `core/eval/reader_b_ocr.md`, `data/generate.py`.
 What I did: reviewed the student's training script; wrote the browser version of his classifier; built Reader A (the `/extract` endpoint using Gemini); installed Tesseract, measured the classifier on OCR text, and hardened the redaction after testing it on OCR output and the real letters; added the student's OTHER pile to the generator.
 What the student did: wrote `core/train_classifier.py`; designed the fourth "OTHER" letter type and its mix; retrained the classifier on four types (98.4%); set up the Gemini API key.
+
+## 2026-09-29
+Files created or edited: `app/src/readerA.ts`, `app/src/Capture.tsx`, `app/vite.config.ts`.
+What I did: reviewed the student's must-agree function; wired both readers and his rule into the camera screen.
+What the student did: fixed the letter type names in `prompts/extract.md`; wrote the must-agree rule (`app/src/agree.ts`) and its four cases.

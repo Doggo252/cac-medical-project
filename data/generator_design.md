@@ -159,6 +159,12 @@ App design decisions
         MC 380, hearing form	30 each
 * Reason - because this is a common thing to occur - people putting in the wrong form, and we should have some way to know what to do with them
 
+* Classifier differences
+    Both say the same type --> good - nothing to tell the user
+    Different type --> Ask the user we could not identify the letter and choose between the two (but don't say MC355 or MC210RV say like request for more information or something like that)
+    No internet --> Trust Bayes Classifier but also ask user ("We think it is ... please make sure")
+    Both say other --> Tell the user this isn't one of the letters we handle
+
 
 What the real letters look like:
 * Everything is printed, there is no handwriting anywhere. Except for highlighting.

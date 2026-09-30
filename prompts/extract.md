@@ -4,16 +4,16 @@ Report only what appears in the text below. Do not use general knowledge about M
 
 Return JSON exactly matching this shape:
 {
-  "letter_type": "one of the three letters ("MC-355", "MC-210-RV", "MC-239-A") or null",
-  "notice_date": "YYYY-MM-DD or null",
-  "effective_date": "YYYY-MM-DD or null",
-  "ask": "written explanation or null",
-  "appeal_language": "true or false",
-  "case_number": "alphanumeric or null",
-  "worker_name": "name or null",
-  "worker_phone": "ten digit number or null",
-  "due_date": "YYYY-MM-DD or null",
-  "certainty": "high or low"
+  "letter_type": one of the four letters types ("MC355", "MC210_RV", "MC_239A", "OTHER") or null,
+  "notice_date": "YYYY-MM-DD" or null,
+  "effective_date": "YYYY-MM-DD" or null,
+  "ask": "written explanation" or null,
+  "appeal_language": true or false,
+  "case_number": "alphanumeric combination" or null,
+  "worker_name": "name" or null,
+  "worker_phone": ten digit number or null,
+  "due_date": "YYYY-MM-DD" or null,
+  "certainty": "high" or "low"
 }
 
 Rules:
