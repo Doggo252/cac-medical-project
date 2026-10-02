@@ -62,3 +62,8 @@ What the student did: wrote `core/train_classifier.py`; designed the fourth "OTH
 Files created or edited: `app/src/readerA.ts`, `app/src/Capture.tsx`, `app/vite.config.ts`.
 What I did: reviewed the student's must-agree function; wired both readers and his rule into the camera screen.
 What the student did: fixed the letter type names in `prompts/extract.md`; wrote the must-agree rule (`app/src/agree.ts`) and its four cases.
+
+## 2026-09-30 to 2026-10-01
+Files created or edited: `backend/main.py`, `backend/grounding.py`, `backend/tests/test_explain.py`, `backend/tests/test_grounding.py`, `TODO.md`.
+What I did: reviewed drafts of the student's explanation prompt; built the `/explain` endpoint and the check that rejects explanations with dates not in the facts.
+What the student did: found the legal sources for the 90-day rule and the weekend rule, decided how days are counted, wrote `prompts/explain.md`, and decided to rework the agent without faxing.

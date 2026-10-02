@@ -16,7 +16,9 @@ Run it from the repository root:
     .venv/bin/uvicorn backend.main:app --reload
 """
 
+import json
 import os
+from datetime import date
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -25,6 +27,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from backend import llm
+from backend.grounding import invented_dates
 from backend.redact import redact
 
 # Read backend/.env into environment variables. Doing it by explicit path means
@@ -92,3 +95,54 @@ def extract(letter: LetterText):
         raise HTTPException(status_code=503, detail="model did not return an object")
     facts = {field: answer.get(field) for field in EXTRACT_FIELDS}
     return {"facts": facts, "redacted": blanked}
+
+
+# Plain-language explanation ---------------------------------------------------
+
+LANGUAGES = ["english", "spanish"]
+URGENCY_LEVELS = ["low", "med", "high", "already passed", "no due date"]
+# How many times to ask the model before giving up on a grounded answer.
+EXPLAIN_TRIES = 2
+
+
+class ExplainRequest(BaseModel):
+    facts: dict
+    language: str = "english"
+
+
+def today():
+    """Today's date. A function of its own so tests can set the date."""
+    return date.today()
+
+
+@app.post("/explain")
+def explain(request: ExplainRequest):
+    """Writes a short plain-language explanation of the letter from the facts
+    the user confirmed, using Neil's prompt (prompts/explain.md)."""
+    if request.language not in LANGUAGES:
+        raise HTTPException(status_code=400, detail=f"language must be one of {LANGUAGES}")
+    # The case number is never needed to explain a letter, so it is not sent.
+    facts = {**request.facts, "case_number": None}
+    prompt = ((PROMPTS / "explain.md").read_text()
+              .replace("{facts}", json.dumps(facts, indent=2))
+              .replace("{language}", request.language)
+              .replace("{date}", today().isoformat()))
+
+    problem = "the model gave no usable answer"
+    for _ in range(EXPLAIN_TRIES):
+        try:
+            answer = llm.ask_for_json(prompt)
+        except llm.LLMError as error:
+            raise HTTPException(status_code=503, detail=str(error))
+        text = answer.get("simplification") if isinstance(answer, dict) else None
+        urgency = answer.get("urgency") if isinstance(answer, dict) else None
+        if not isinstance(text, str) or urgency not in URGENCY_LEVELS:
+            problem = "the model did not follow the answer format"
+            continue
+        # The safety rule: no date that is not in the confirmed facts.
+        invented = invented_dates(text, facts)
+        if invented:
+            problem = f"the explanation mentioned a date that is not in the letter: {invented}"
+            continue
+        return {"explanation": text, "urgency": urgency, "language": request.language}
+    raise HTTPException(status_code=502, detail=problem)
