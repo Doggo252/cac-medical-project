@@ -13,9 +13,14 @@ import os
 
 import httpx
 
-# A fast, cheap model. Pinned to an exact name so it cannot change underneath
-# the accuracy numbers.
-MODEL = "gemini-3.8-flash"
+# Pinned to an exact name so it cannot change underneath the accuracy numbers.
+# Chosen by timing 12 letters (2026-10-07): gemini-3.5-flash with "low"
+# thinking got the letter type right on 10 of 12 in about 3 seconds each.
+# gemini-3.8-flash with full thinking was right but took up to 34 seconds,
+# too slow for someone standing in their kitchen; with low thinking it was
+# fast but less accurate (9 of 12).
+MODEL = "gemini-3.5-flash"
+THINKING = {"thinkingLevel": "low"}
 URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
 
 
@@ -32,7 +37,7 @@ def ask_for_json(prompt):
     body = {
         "contents": [{"parts": [{"text": prompt}]}],
         # JSON only, and temperature 0 so the same letter gets the same answer.
-        "generationConfig": {"responseMimeType": "application/json", "temperature": 0},
+        "generationConfig": {"responseMimeType": "application/json", "temperature": 0, "thinkingConfig": THINKING},
     }
     try:
         response = httpx.post(URL, json=body, headers={"x-goog-api-key": key}, timeout=60)

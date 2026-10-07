@@ -146,3 +146,166 @@ progress {
   font-weight: 600;
   color: var(--teal) !important;
 }
+
+/* Countdown cards. The left edge color shows how close the deadline is. */
+.countdowns {
+  margin-top: 1.75rem;
+}
+
+.countdown {
+  margin-top: 0.875rem;
+  padding: 1rem 1.25rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--teal);
+  border-radius: 0.875rem;
+}
+
+.countdown p {
+  margin: 0;
+}
+
+.countdown.high { border-left-color: #c0392b; }
+.countdown.med { border-left-color: #d68910; }
+.countdown.passed,
+.countdown.unknown { border-left-color: #9aa5a1; }
+
+.countdown-label {
+  font-weight: 600;
+}
+
+.countdown-days {
+  margin-top: 0.25rem !important;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.countdown.high .countdown-days { color: #c0392b; }
+.countdown.unknown .countdown-days { font-size: 1rem; font-weight: 500; color: var(--ink-soft); }
+
+.countdown-date {
+  color: var(--ink-soft);
+}
+
+.countdown-note {
+  margin-top: 0.4rem !important;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.countdown-law {
+  margin-top: 0.5rem !important;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+/* The reading choice before scanning. */
+.choice {
+  display: block;
+  width: 100%;
+  margin-top: 0.875rem;
+  padding: 1.1rem 1.25rem;
+  font: inherit;
+  text-align: left;
+  color: var(--ink);
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: 0.875rem;
+  cursor: pointer;
+}
+.choice:hover { border-color: var(--teal); }
+.choice strong { display: block; font-size: 1.1rem; color: var(--teal); }
+.choice span { display: block; margin-top: 0.35rem; line-height: 1.45; color: var(--ink-soft); }
+
+.link {
+  padding: 0;
+  font: inherit;
+  color: var(--teal);
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* The confirm screen. Flagged facts are yellow until the user checks them. */
+.confirm .fact {
+  display: block;
+  margin-top: 0.875rem;
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.625rem;
+}
+.confirm .fact.flagged {
+  background: #fff8db;
+  border-color: #e0b100;
+}
+.fact-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+.confirm input {
+  width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.6rem 0.7rem;
+  font: inherit;
+  font-size: 1.05rem;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+}
+.fact-flag {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: #7a5a00;
+}
+
+/* The explanation, with the English and Spanish switch. */
+.explanation-top {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.language-switch {
+  display: flex;
+  overflow: hidden;
+  border: 1px solid var(--teal);
+  border-radius: 999px;
+}
+.language-switch button {
+  padding: 0.35rem 0.8rem;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--teal);
+  background: #fff;
+  border: none;
+  cursor: pointer;
+}
+.language-switch button.on { color: #fff; background: var(--teal); }
+.urgency {
+  display: inline-block;
+  margin: 0.75rem 0 0.5rem !important;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff !important;
+  background: var(--teal);
+  border-radius: 999px;
+}
+.urgency.high, .urgency.already-passed { background: #c0392b; }
+.urgency.med { background: #d68910; }
+.explanation-text {
+  font-size: 1.1rem;
+  line-height: 1.55;
+  color: var(--ink) !important;
+}
+
+details.card summary {
+  font-weight: 600;
+  cursor: pointer;
+}
