@@ -1,16 +1,32 @@
-/* Mobile first. This app is used standing in a kitchen holding a letter, so
-   everything is large, high contrast, and single column. */
+/* Made for older eyes and hands. The person using this is often a senior,
+   standing in a kitchen, holding a letter. So:
+   - big text (20px to start, never smaller than 16px)
+   - big buttons, at least 56px tall, easy to hit with a thumb
+   - strong contrast, and color is never the only signal
+   - one column, one main action at a time */
 
 :root {
-  --ink: #16241f;
-  --ink-soft: #4a5b55;
-  --teal: #0f766e;
-  --line: #d8e2de;
-  --page: #f7faf9;
+  --ink: #1b1b1b;
+  --ink-soft: #4a4a4a;
+  --brand: #0b5d56;
+  --brand-soft: #e3f1ef;
+  --page: #faf8f4;
+  --card: #ffffff;
+  --line: #d9d4ca;
+  --red: #b42318;
+  --red-soft: #fdecea;
+  --amber: #8a5a00;
+  --amber-soft: #fff4cc;
+  --amber-line: #d9a300;
+  --green: #1e6b37;
+  --green-soft: #e5f4ea;
 
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 125%; /* 20px, so every rem below is 20px */
+  line-height: 1.5;
   color: var(--ink);
   background: var(--page);
+  -webkit-text-size-adjust: 100%;
 }
 
 * {
@@ -23,289 +39,550 @@ body {
   background: var(--page);
 }
 
-/* Keeps content clear of the notch and the home bar on a phone. */
-.screen {
-  max-width: 34rem;
-  margin: 0 auto;
-  padding: 1.5rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom));
-  padding-top: calc(1.5rem + env(safe-area-inset-top));
+/* A thick, clear outline for anyone using a keyboard or switch control. */
+:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 3px;
 }
 
-h1 {
+/* The page. Room at the bottom for the tab bar and the phone's home bar. */
+.screen {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: calc(1rem + env(safe-area-inset-top)) 0.8rem calc(6rem + env(safe-area-inset-bottom));
+}
+
+.app-name {
   margin: 0;
-  font-size: 2rem;
-  letter-spacing: -0.02em;
-  color: var(--teal);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+h1,
+.page-title {
+  margin: 0.2rem 0 0;
+  font-size: 1.6rem;
+  line-height: 1.2;
 }
 
 h2 {
-  margin: 0 0 0.5rem;
-  font-size: 1.05rem;
+  margin: 0 0 0.4rem;
+  font-size: 1.15rem;
+  line-height: 1.3;
 }
 
-.tagline {
-  margin: 0.5rem 0 0;
-  font-size: 1.05rem;
-  line-height: 1.5;
+p {
+  margin: 0;
+}
+
+.lead {
+  margin-top: 0.5rem;
   color: var(--ink-soft);
+}
+
+.step {
+  display: inline-block;
+  margin-top: 0.6rem;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--brand);
+  background: var(--brand-soft);
+  border-radius: 999px;
 }
 
 .card {
-  margin-top: 1.75rem;
-  padding: 1.25rem;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 0.875rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 0.8rem;
 }
 
-.card p {
-  margin: 0;
-  line-height: 1.55;
-  color: var(--ink-soft);
+.card p + p {
+  margin-top: 0.5rem;
 }
 
-/* Buttons are big on purpose: easy to hit with a thumb, easy to read. */
+.section-title {
+  margin: 1.6rem 0 0;
+  font-size: 1.15rem;
+}
+
+/* Buttons. Every one is full width and at least 56px tall. */
 .button {
-  display: block;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  margin-top: 0.875rem;
-  padding: 1rem 1.25rem;
+  min-height: 2.8rem;
+  margin-top: 0.75rem;
+  padding: 0.6rem 1rem;
   font: inherit;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
   text-align: center;
-  color: var(--teal);
-  background: #fff;
-  border: 2px solid var(--teal);
-  border-radius: 0.875rem;
+  color: var(--brand);
+  background: var(--card);
+  border: 2px solid var(--brand);
+  border-radius: 0.8rem;
   cursor: pointer;
 }
 
 .button.primary {
-  margin-top: 1.75rem;
   color: #fff;
-  background: var(--teal);
+  background: var(--brand);
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.button-row {
+  display: flex;
+  gap: 0.6rem;
+}
+.button-row .button {
+  flex: 1;
 }
 
 .button.quiet {
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: var(--ink-soft);
-  border: 1px dashed var(--line);
+  border: 2px dashed var(--line);
 }
 
-.hint {
-  margin-top: 1.25rem;
-  line-height: 1.5;
-  color: var(--ink-soft);
-}
-
-.error {
-  margin-top: 1.5rem;
-  padding: 0.875rem 1rem;
-  color: #8a1c1c;
-  background: #fdecec;
-  border-radius: 0.75rem;
-}
-
-.photo {
-  display: block;
-  width: 100%;
-  margin-top: 1.5rem;
-  border: 1px solid var(--line);
-  border-radius: 0.875rem;
-}
-
-progress {
-  width: 100%;
-  height: 0.75rem;
-  margin: 0.5rem 0;
-  accent-color: var(--teal);
-}
-
-.meta {
-  margin-bottom: 0.75rem !important;
-  font-size: 0.9rem;
-}
-
-/* The raw text the reader found. Monospace keeps columns lined up. */
-.ocr-text {
-  margin: 0;
-  max-height: 24rem;
-  overflow: auto;
-  font-family: ui-monospace, Menlo, monospace;
-  font-size: 0.8rem;
-  line-height: 1.45;
-  white-space: pre-wrap;
-  color: var(--ink);
-}
-
-.answer {
-  margin: 0 !important;
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--teal) !important;
-}
-
-/* Countdown cards. The left edge color shows how close the deadline is. */
-.countdowns {
-  margin-top: 1.75rem;
-}
-
-.countdown {
-  margin-top: 0.875rem;
-  padding: 1rem 1.25rem;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-left: 6px solid var(--teal);
-  border-radius: 0.875rem;
-}
-
-.countdown p {
-  margin: 0;
-}
-
-.countdown.high { border-left-color: #c0392b; }
-.countdown.med { border-left-color: #d68910; }
-.countdown.passed,
-.countdown.unknown { border-left-color: #9aa5a1; }
-
-.countdown-label {
-  font-weight: 600;
-}
-
-.countdown-days {
-  margin-top: 0.25rem !important;
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-.countdown.high .countdown-days { color: #c0392b; }
-.countdown.unknown .countdown-days { font-size: 1rem; font-weight: 500; color: var(--ink-soft); }
-
-.countdown-date {
-  color: var(--ink-soft);
-}
-
-.countdown-note {
-  margin-top: 0.4rem !important;
-  font-size: 0.9rem;
-  color: var(--ink-soft);
-}
-
-.countdown-law {
-  margin-top: 0.5rem !important;
-  font-size: 0.8rem;
-  color: var(--ink-soft);
-}
-
-/* The reading choice before scanning. */
-.choice {
-  display: block;
-  width: 100%;
-  margin-top: 0.875rem;
-  padding: 1.1rem 1.25rem;
-  font: inherit;
-  text-align: left;
-  color: var(--ink);
-  background: #fff;
-  border: 2px solid var(--line);
-  border-radius: 0.875rem;
-  cursor: pointer;
-}
-.choice:hover { border-color: var(--teal); }
-.choice strong { display: block; font-size: 1.1rem; color: var(--teal); }
-.choice span { display: block; margin-top: 0.35rem; line-height: 1.45; color: var(--ink-soft); }
-
+/* A plain text button, like "Change" or "Remove". Still a big tap area. */
 .link {
-  padding: 0;
+  min-height: 2.2rem;
+  padding: 0 0.2rem;
   font: inherit;
-  color: var(--teal);
+  font-weight: 600;
+  color: var(--brand);
   text-decoration: underline;
+  text-underline-offset: 0.15em;
   background: none;
   border: none;
   cursor: pointer;
 }
-
-/* The confirm screen. Flagged facts are yellow until the user checks them. */
-.confirm .fact {
-  display: block;
-  margin-top: 0.875rem;
-  padding: 0.75rem;
-  border: 1px solid var(--line);
-  border-radius: 0.625rem;
+.link.danger {
+  color: var(--red);
 }
-.confirm .fact.flagged {
-  background: #fff8db;
-  border-color: #e0b100;
+
+.hint {
+  margin-top: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.small {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.error {
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  font-weight: 600;
+  color: var(--red);
+  background: var(--red-soft);
+  border: 2px solid var(--red);
+  border-radius: 0.8rem;
+}
+
+/* The photo of the letter. */
+.photo {
+  display: block;
+  width: 100%;
+  max-height: 22rem;
+  margin-top: 1rem;
+  object-fit: contain;
+  background: #eee;
+  border: 2px solid var(--line);
+  border-radius: 0.8rem;
+}
+
+progress {
+  width: 100%;
+  height: 1rem;
+  margin: 0.6rem 0 0.3rem;
+  accent-color: var(--brand);
+}
+
+/* "This letter is..." */
+.big-answer {
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--brand);
+}
+
+.checked-twice {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  margin-top: 0.6rem !important;
+  font-weight: 600;
+  color: var(--green);
+}
+
+/* Big choice buttons with a title and a line of explanation. */
+.choice {
+  display: block;
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.9rem 1rem;
+  font: inherit;
+  text-align: left;
+  color: var(--ink);
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 0.8rem;
+  cursor: pointer;
+}
+.choice:hover,
+.choice.on {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+}
+.choice strong {
+  display: block;
+  color: var(--brand);
+}
+.choice span {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+/* The check-the-facts screen. A fact that needs a look is yellow with words,
+   not just color. */
+.fact {
+  display: block;
+  margin-top: 0.8rem;
+  padding: 0.7rem;
+  border: 2px solid var(--line);
+  border-radius: 0.7rem;
+}
+.fact.flagged {
+  background: var(--amber-soft);
+  border-color: var(--amber-line);
 }
 .fact-label {
   display: block;
   font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--ink-soft);
+  font-weight: 700;
 }
-.confirm input {
+.fact input,
+.field input,
+.field textarea {
   width: 100%;
-  margin-top: 0.35rem;
-  padding: 0.6rem 0.7rem;
+  min-height: 2.6rem;
+  margin-top: 0.3rem;
+  padding: 0.4rem 0.6rem;
   font: inherit;
-  font-size: 1.05rem;
   color: var(--ink);
   background: #fff;
-  border: 1px solid var(--line);
+  border: 2px solid #8f8a80;
   border-radius: 0.5rem;
+}
+.field textarea {
+  min-height: 4.5rem;
+  resize: vertical;
 }
 .fact-flag {
   display: block;
-  margin-top: 0.4rem;
+  margin-top: 0.35rem;
   font-size: 0.85rem;
-  color: #7a5a00;
+  font-weight: 600;
+  color: var(--amber);
+}
+.field {
+  display: block;
+  margin-top: 1rem;
+}
+.field > span {
+  font-weight: 700;
+}
+
+/* The countdowns. The words say how urgent it is; the color only helps. */
+.countdown {
+  margin-top: 0.8rem;
+  padding: 0.9rem 1rem;
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-left: 0.5rem solid var(--brand);
+  border-radius: 0.8rem;
+}
+.countdown.high {
+  border-left-color: var(--red);
+}
+.countdown.med {
+  border-left-color: var(--amber-line);
+}
+.countdown.passed,
+.countdown.unknown {
+  border-left-color: #8f8a80;
+}
+.countdown-label {
+  font-weight: 700;
+}
+.countdown-days {
+  margin-top: 0.2rem !important;
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.countdown.high .countdown-days {
+  color: var(--red);
+}
+.countdown.unknown .countdown-days {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+.countdown-date {
+  margin-top: 0.15rem !important;
+}
+.countdown-note,
+.countdown-law {
+  margin-top: 0.4rem !important;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
 }
 
 /* The explanation, with the English and Spanish switch. */
 .explanation-top {
   display: flex;
-  gap: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.6rem;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
 }
 .language-switch {
   display: flex;
   overflow: hidden;
-  border: 1px solid var(--teal);
+  border: 2px solid var(--brand);
   border-radius: 999px;
 }
 .language-switch button {
-  padding: 0.35rem 0.8rem;
+  min-height: 2.2rem;
+  padding: 0 0.8rem;
   font: inherit;
-  font-size: 0.9rem;
-  color: var(--teal);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--brand);
   background: #fff;
   border: none;
   cursor: pointer;
 }
-.language-switch button.on { color: #fff; background: var(--teal); }
+.language-switch button.on {
+  color: #fff;
+  background: var(--brand);
+}
 .urgency {
   display: inline-block;
-  margin: 0.75rem 0 0.5rem !important;
-  padding: 0.2rem 0.6rem;
+  margin: 0.7rem 0 0.4rem !important;
+  padding: 0.15rem 0.7rem;
   font-size: 0.85rem;
-  font-weight: 700;
-  color: #fff !important;
-  background: var(--teal);
+  font-weight: 800;
+  color: #fff;
+  background: var(--brand);
   border-radius: 999px;
 }
-.urgency.high, .urgency.already-passed { background: #c0392b; }
-.urgency.med { background: #d68910; }
+.urgency.high,
+.urgency.already-passed {
+  background: var(--red);
+}
+.urgency.med {
+  background: var(--amber);
+}
 .explanation-text {
-  font-size: 1.1rem;
-  line-height: 1.55;
-  color: var(--ink) !important;
+  font-size: 1.05rem;
+  line-height: 1.6;
 }
 
-details.card summary {
+/* The timeline. */
+.events {
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.event {
+  position: relative;
+  margin-top: 0.8rem;
+  padding: 0.8rem 1rem 0.8rem 1.4rem;
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 0.8rem;
+}
+/* The dot on the left edge, like a line of beads. */
+.event::before {
+  position: absolute;
+  top: 1.1rem;
+  left: -0.45rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  content: '';
+  background: var(--brand);
+  border: 3px solid var(--page);
+  border-radius: 50%;
+}
+.event.county::before {
+  background: #8f8a80;
+}
+.event-date {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+.event-what {
+  font-weight: 700;
+}
+.event-note {
+  margin-top: 0.2rem !important;
+}
+.event-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.3rem;
+}
+
+.proof {
+  display: inline-flex;
+  gap: 0.3rem;
+  align-items: center;
+  font-size: 0.85rem;
   font-weight: 600;
+  color: var(--green);
+}
+.proof.missing {
+  color: var(--amber);
+}
+
+/* "The county may have made a mistake." */
+.finding {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--amber-soft);
+  border: 2px solid var(--amber-line);
+  border-radius: 0.8rem;
+}
+.finding h2 {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.finding .law {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.draft-text {
+  margin-top: 0.5rem !important;
+  white-space: pre-wrap;
+}
+
+/* The vault. */
+.paper {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 0.8rem;
+  align-items: start;
+}
+.paper-thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  overflow: hidden;
+  font-weight: 800;
+  color: var(--ink-soft);
+  background: #eee;
+  border-radius: 0.5rem;
+}
+.paper-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.paper-name {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.fingerprint {
+  font-family: ui-monospace, Menlo, monospace;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+/* The tab bar at the bottom. Big labels under big icons. */
+.tabbar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--card);
+  border-top: 2px solid var(--line);
+}
+.tabbar-inner {
+  display: flex;
+  width: 100%;
+  max-width: 32rem;
+}
+.tab {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.15rem;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.6rem;
+  padding: 0.35rem 0.2rem;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  background: none;
+  border: none;
+  border-top: 0.25rem solid transparent;
   cursor: pointer;
+}
+.tab svg {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+.tab.on {
+  color: var(--brand);
+  border-top-color: var(--brand);
+}
+
+/* Only while developing: what the app read, for fixing problems. */
+details.dev {
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
+}
+details.dev summary {
+  cursor: pointer;
+  color: var(--ink-soft);
+}
+.ocr-text {
+  max-height: 20rem;
+  overflow: auto;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.7rem;
+  white-space: pre-wrap;
 }

@@ -42,12 +42,14 @@ export default function Confirm({ fields, facts, flags, onConfirm }: Props) {
   const flaggedCount = fields.filter((f) => flags[f] && !checked.has(f)).length
 
   return (
-    <form className="card confirm" onSubmit={submit}>
+    <form className="card" onSubmit={submit}>
       <h2>Is this right?</h2>
-      <p className="meta">
-        Check each fact against your letter. Tap any one to fix it.
-        {flaggedCount > 0 && ` ${flaggedCount} need${flaggedCount === 1 ? 's' : ''} a second look.`}
-      </p>
+      <p>Look at your letter and check each one. Tap a box to fix it.</p>
+      {flaggedCount > 0 && (
+        <p className="fact-flag">
+          {flaggedCount === 1 ? '1 box is yellow. Please check it.' : `${flaggedCount} boxes are yellow. Please check them.`}
+        </p>
+      )}
       {fields.map((field) => {
         const flag = !checked.has(field) ? flags[field] : undefined
         return (
@@ -64,7 +66,7 @@ export default function Confirm({ fields, facts, flags, onConfirm }: Props) {
         )
       })}
       <button type="submit" className="button primary">
-        These are right
+        Yes, these are right
       </button>
     </form>
   )

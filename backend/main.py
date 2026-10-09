@@ -8,7 +8,7 @@ server is the only thing that holds the keys.
 Endpoints arrive over the next few weeks:
   /extract     redacted letter text in, structured facts out   (week 2)
   /explain     confirmed facts in, plain-language summary out  (week 3)
-  /draft       timeline facts in, draft letter out             (week 4)
+  /draft       findings and timeline in, draft letters out     (week 4)
   /fax         send a signed packet                            (week 5)
   /fax/status  check on a sent fax                             (week 5)
 
@@ -145,4 +145,65 @@ def explain(request: ExplainRequest):
             problem = f"the explanation mentioned a date that is not in the letter: {invented}"
             continue
         return {"explanation": text, "urgency": urgency, "language": request.language}
+    raise HTTPException(status_code=502, detail=problem)
+
+
+# Draft letters ------------------------------------------------------------------
+
+# How many times to ask the model before giving up on a grounded draft.
+DRAFT_TRIES = 2
+DRAFT_PARTS = ["rescission_letter", "hearing_reason"]
+
+
+class DraftRequest(BaseModel):
+    facts: dict
+    # What Neil's county-mistake rules found (core/contradictions.py).
+    findings: list[dict]
+    # The user's timeline events: date, type, description.
+    timeline: list[dict] = []
+
+
+def allowed_dates(facts, findings, timeline):
+    """Every date the draft is allowed to mention, in one dict for the
+    grounding check: the confirmed facts, the finding dates, and the timeline."""
+    allowed = dict(facts)
+    for i, item in enumerate(findings + timeline):
+        allowed[f"date_{i}"] = item.get("date")
+    return allowed
+
+
+@app.post("/draft")
+def draft(request: DraftRequest):
+    """Writes the rescission request and the hearing "here's why" text from
+    Neil's prompt (prompts/draft.md). Only called when one of Neil's
+    county-mistake rules fired."""
+    if not request.findings:
+        raise HTTPException(status_code=400, detail="there is nothing to draft without a finding")
+    facts = {**request.facts, "case_number": None}
+    # The user typed the descriptions, so they could hold a name or case
+    # number. Scrub them, and leave out who did it and the proof file names.
+    timeline = [{"date": e.get("date"), "type": e.get("type"),
+                 "description": redact(str(e.get("description") or ""))[0]}
+                for e in request.timeline]
+    prompt = ((PROMPTS / "draft.md").read_text()
+              .replace("{facts}", json.dumps(facts, indent=2))
+              .replace("{findings}", json.dumps(request.findings, indent=2))
+              .replace("{timeline}", json.dumps(timeline, indent=2)))
+    allowed = allowed_dates(facts, request.findings, timeline)
+
+    problem = "the model gave no usable answer"
+    for _ in range(DRAFT_TRIES):
+        try:
+            answer = llm.ask_for_json(prompt)
+        except llm.LLMError as error:
+            raise HTTPException(status_code=503, detail=str(error))
+        if not isinstance(answer, dict) or not all(isinstance(answer.get(p), str) for p in DRAFT_PARTS):
+            problem = "the model did not follow the answer format"
+            continue
+        # Same safety rule as the explanation: no date that is not ours.
+        invented = invented_dates(" ".join(answer[p] for p in DRAFT_PARTS), allowed)
+        if invented:
+            problem = f"the draft mentioned a date that is not in the facts or timeline: {invented}"
+            continue
+        return {p: answer[p] for p in DRAFT_PARTS}
     raise HTTPException(status_code=502, detail=problem)

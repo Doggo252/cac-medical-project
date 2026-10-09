@@ -78,3 +78,8 @@ Files created or edited: none.
 What I did: gave step-by-step outlines for the county-mistake code and its tests; reviewed each draft and pointed out bugs.
 What the student did: wrote `core/contradictions.py` (finding the papers, Rule 1, Rule 2) and its 10 tests in `core/test_contradictions.py`.
 Update (2026-10-08): wrote `core/eval/reader_a_accuracy.py` and measured Reader A on the 640 test letters (results in `core/eval/reader_a.md`).
+
+## 2026-10-09
+Files created or edited: `backend/main.py` (`/draft`), `app/src/contradictions.ts`, `app/src/fingerprint.ts`, `app/src/storage.ts`, `app/src/Timeline.tsx`, `app/src/Vault.tsx`, `app/src/LetterHome.tsx`, `app/src/App.tsx`, `app/src/Capture.tsx`, `app/src/index.css`, `core/eval/make_contradiction_cases.py`, and tests.
+What I did: gave outlines for the checker and its tests and reviewed each draft; reviewed the three prompts and reran the Reader A test (81.1% to 96.7%); built the `/draft` endpoint, the phone copy of the county-mistake rules (matched to the student's Python on 400 cases), the timeline, the receipt vault with fingerprints, and a simpler, larger app design at the student's request.
+What the student did: wrote `core/checker.py` and its 8 tests; rewrote `prompts/extract.md` to tell the letters apart, fixed `prompts/explain.md`, and wrote `prompts/draft.md` (a few lines in the extract and draft prompts use wording I suggested); asked for the senior-friendly redesign.

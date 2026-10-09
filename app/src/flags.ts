@@ -57,8 +57,8 @@ export function flagsFor(input: FlagInput): Record<string, string> {
     if (input.fields.includes(field)) flags[field] ??= 'This was hard to read. Please check it.'
   }
 
-  if (input.mode === 'phone') flagAll('Your phone read this without the AI. Please check it.')
-  if (input.certainty === 'low') flagAll('The reader was not sure. Please check it.')
+  if (input.mode === 'phone') flagAll('Your phone read this by itself. Please check it.')
+  if (input.certainty === 'low') flagAll('We were not sure about this. Please check it.')
   if (input.photoConfidence < LOW_PHOTO_CONFIDENCE) flagAll('The photo was hard to read. Please check it.')
   return flags
 }

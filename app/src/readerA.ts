@@ -59,3 +59,35 @@ export async function askForExplanation(
     return null
   }
 }
+
+export type Drafts = { rescission_letter: string; hearing_reason: string }
+
+// Asks the backend to write the letter to the county and the hearing reason,
+// from Neil's prompt (prompts/draft.md). Only used when one of Neil's
+// county-mistake rules found something. The backend throws away any draft
+// with a date that is not in the facts or the timeline.
+export async function askForDrafts(
+  facts: Record<string, unknown>,
+  findings: unknown[],
+  timeline: { date: string; type: string; description: string }[]
+): Promise<Drafts | null> {
+  try {
+    const response = await fetch('/api/draft', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      // Only the date, kind and note of each event. Who did it and the proof
+      // file names stay on the phone.
+      body: JSON.stringify({
+        facts: { ...facts, case_number: null },
+        findings,
+        timeline: timeline.map(({ date, type, description }) => ({ date, type, description: redact(description).text })),
+      }),
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+    })
+    if (!response.ok) return null
+    return await response.json()
+  } catch (error) {
+    console.warn('Drafts unavailable:', error)
+    return null
+  }
+}
