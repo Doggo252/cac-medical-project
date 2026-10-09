@@ -77,3 +77,4 @@ What the student did: designed `core/rules/deadlines.json` and wrote all five ru
 Files created or edited: none.
 What I did: gave step-by-step outlines for the county-mistake code and its tests; reviewed each draft and pointed out bugs.
 What the student did: wrote `core/contradictions.py` (finding the papers, Rule 1, Rule 2) and its 10 tests in `core/test_contradictions.py`.
+Update (2026-10-08): wrote `core/eval/reader_a_accuracy.py` and measured Reader A on the 640 test letters (results in `core/eval/reader_a.md`).
